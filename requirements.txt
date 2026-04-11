@@ -1,0 +1,5 @@
+# ── Option A (recommandée) : meilleur rendu, installe son propre Chromium
+playwright>=1.40.0
+
+# ── Option B (fallback pur Python, aucune dépendance système)
+xhtml2pdf>=0.2.11

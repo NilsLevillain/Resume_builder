@@ -1,0 +1,41 @@
+name: 🚀 Generate & Deploy CV
+
+on:
+  push:
+    branches: [main]
+    paths: ["data/**", "src/**", "generate.py"]
+  workflow_dispatch:          # déclenchement manuel depuis GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install playwright
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Generate CV (FR + EN)
+        run: python generate.py
+
+      - name: Commit & push docs/
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --staged --quiet \
+            && echo "✅ Aucun changement." \
+            || (git commit -m "chore: regenerate CV [skip ci]" && git push)
