@@ -107,19 +107,23 @@ def build_summary(summary: Any, lang: str) -> str:
     )
 
 def build_experience(experience: list, lang: str) -> str:
-    """Format : L'Oréal | Titre · date — sans localisation ni statut."""
+    """
+    Ajoute :
+    - class 'section-experience' sur la section
+    - class 'entry-card--{i}' sur chaque carte (0 = plus récent)
+    """
     if not _is_on("experience"):
         return ""
 
     cards = []
-    for job in experience:
+    for i, job in enumerate(experience):
         date_str   = f"{t(job['start'], lang)} – {t(job['end'], lang)}"
         company    = job.get("company", "")
         title      = t(job["title"], lang)
         full_title = f"{company}&nbsp;&nbsp;|&nbsp;&nbsp;{title}" if company else title
 
         cards.append(
-            f'  <div class="entry-card entry">\n'
+            f'  <div class="entry-card entry entry-card--{i}">\n'
             f'    <div class="entry-header">\n'
             f'      <div class="entry-left">\n'
             f'        <div class="entry-title">{full_title}</div>\n'
@@ -131,7 +135,7 @@ def build_experience(experience: list, lang: str) -> str:
         )
 
     return (
-        f'<section>\n'
+        f'<section class="section-experience">\n'
         f'  <div class="section-title">{_label("experience", lang)}</div>\n'
         + "".join(cards)
         + f'</section>\n'

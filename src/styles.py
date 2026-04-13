@@ -48,7 +48,7 @@ function initParticles() {
     document.body.prepend(canvas);
 
     const ctx       = canvas.getContext('2d');
-    const COUNT     = 55;
+    const COUNT     = 400;
     const particles = [];
 
     function resize() {
@@ -60,10 +60,10 @@ function initParticles() {
         return {
             x  : Math.random() * canvas.width,
             y  : Math.random() * canvas.height,
-            r  : Math.random() * 1.8 + 0.4,
-            dx : (Math.random() - 0.5) * 0.22,
-            dy : (Math.random() - 0.5) * 0.22,
-            a  : Math.random() * 0.18 + 0.04,
+            r  : Math.random() * 2 + 0.6,
+            dx : (Math.random() - 0.5) * 0.99,
+            dy : (Math.random() - 0.5) * 0.99,
+            a  : Math.random() * 0.25 + 0.09,
         };
     }
 
@@ -96,6 +96,42 @@ function initParticles() {
 }
 
 document.addEventListener('DOMContentLoaded', initParticles);
+
+// ── Scroll reveal (main content + mobile) ────────────────────
+function initScrollReveal() {
+    if (!window.IntersectionObserver) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const targets = Array.from(document.querySelectorAll(
+        '.cv-main .entry-card, .cv-main .cv-summary, .cv-main .section-title'
+    ));
+
+    // Masquer immédiatement avant observation
+    targets.forEach((el, i) => {
+        el.style.opacity    = '0';
+        el.style.transform  = 'translateY(16px)';
+        el.style.transition =
+            `opacity 0.45s ease ${i * 0.05}s, transform 0.45s ease ${i * 0.05}s`;
+    });
+
+    const obs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity   = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    obs.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.06, rootMargin: '0px 0px -10px 0px' }
+    );
+
+    targets.forEach(el => obs.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', initScrollReveal);
+
 """
 
 # ── CSS ───────────────────────────────────────────────────────
@@ -207,6 +243,56 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 #cv-particles {{ display: block; }}
+
+
+/* ══════════════════════════════════════════════════════
+       GRADIENT EXPÉRIENCES — actuelle → plus ancienne
+       (les classes entry-card--0/1/2 sont posées par builder.py)
+    ══════════════════════════════════════════════════════ */
+
+    /* ── Rôle actuel (0) : bleu vif + halo ── */
+    .section-experience .entry-card--0 {{
+        border-left-color : {ACCENT_COLOR} !important;
+        border-left-width : 4px !important;
+        box-shadow        : var(--card-shadow),
+                            0 0 0  2px rgba(37,99,235,0.08),
+                            0 0 18px rgba(37,99,235,0.14) !important;
+    }}
+
+    /* ── Rôle intermédiaire (1) : bleu moyen ── */
+    .section-experience .entry-card--1 {{
+        border-left-color : #60a5fa !important;
+        border-left-width : 3px !important;
+    }}
+
+    /* ── Rôle le plus ancien (2+) : bleu clair ── */
+    .section-experience .entry-card--2,
+    .section-experience .entry-card--3 {{
+        border-left-color : #bfdbfe !important;
+        border-left-width : 3px !important;
+    }}
+
+    /* ── Dark mode ── */
+    [data-theme="dark"] .section-experience .entry-card--0 {{
+        box-shadow: var(--card-shadow),
+                    0 0 0  2px rgba(96,165,250,0.12),
+                    0 0 22px rgba(96,165,250,0.20) !important;
+    }}
+    [data-theme="dark"] .section-experience .entry-card--1 {{
+        border-left-color: #3b82f6 !important;
+    }}
+    [data-theme="dark"] .section-experience .entry-card--2,
+    [data-theme="dark"] .section-experience .entry-card--3 {{
+        border-left-color: #1d4ed8 !important;
+    }}
+
+    /* ── Désactiver animations au print / PDF ── */
+    @media print {{
+        [style*="opacity"] {{ opacity: 1 !important; }}
+        [style*="transform"] {{ transform: none !important; }}
+    }}
+
+
 
 @media print {{
     #cv-particles {{ display: none; }}
