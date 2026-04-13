@@ -32,3 +32,6 @@ Desktop.ini
 # ── Divers ───────────────────────────────────────────────────
 *.log
 .env
+
+# Généré par GitHub Actions uniquement
+docs/
