@@ -1,37 +1,13 @@
-# ── Python ───────────────────────────────────────────────────
+# Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-.Python
-
-# ── Environnement virtuel ─────────────────────────────────────
 .venv/
 venv/
-env/
-ENV/
 
-# ── PDFs générés (lourds, re-générables) ─────────────────────
-docs/*.pdf
-
-# ── Ancien dossier output (versions précédentes) ─────────────
-output/
-
-# ── OS ───────────────────────────────────────────────────────
-.DS_Store
-.DS_Store?
-Thumbs.db
-Desktop.ini
-
-# ── IDE ──────────────────────────────────────────────────────
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# ── Divers ───────────────────────────────────────────────────
-*.log
-.env
-
-# Généré par GitHub Actions uniquement
+# Généré par GitHub Actions — sauf .nojekyll
 docs/
+!docs/.nojekyll
+
+# OS
+.DS_Store
+Thumbs.db
