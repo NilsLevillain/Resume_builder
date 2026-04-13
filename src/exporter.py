@@ -78,6 +78,13 @@ CV = _load_cv_data()
 def _ensure_output_dir() -> None:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+    # Empêche GitHub Pages de traiter les fichiers avec Jekyll
+    nojekyll = os.path.join(OUTPUT_DIR, ".nojekyll")
+    if not os.path.exists(nojekyll):
+        open(nojekyll, "w").close()
+
+
+        
 def _filepath(lang: str, ext: str) -> str:
     """EN → index.html pour GitHub Pages, autres → {basename}_{lang}.{ext}"""
     if ext == "html" and lang == PRIMARY_LANG:
@@ -281,3 +288,5 @@ def export_all(langs: list) -> None:
         export_html(lang)
         export_pdf(lang)
     print(f"\n✨  Terminé — fichiers dans /{OUTPUT_DIR}/\n")
+
+    
