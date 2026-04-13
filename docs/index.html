@@ -134,9 +134,10 @@ document.addEventListener('DOMContentLoaded', initParticles);
     --tag-text        : #1d4ed8;
     --tag-border      : #bfdbfe;
 
-    --kpi-bg          : #fffbeb;
-    --kpi-text        : #b45309;
-    --kpi-border      : #fde68a;
+    /* ── KPI badges (palette configurable dans cv_config.py) ── */
+    --kpi-bg          : #dbeafe;
+    --kpi-text        : #1e40af;
+    --kpi-border      : #93c5fd;
 
     --radius-card     : 8px;
     --radius-tag      : 100px;
@@ -332,14 +333,27 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .section-title {
-    font-size     : 8.5pt;
-    font-weight   : bold;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top    : 22px;
-    margin-bottom : 12px;
-    padding-bottom: 6px;
-}
+        font-size      : 10pt;
+        font-weight    : bold;
+        text-transform : uppercase;
+        letter-spacing : 2.5px;
+        margin-top     : 24px;
+        margin-bottom  : 14px;
+        padding-bottom : 8px;
+    }
+
+    .cv-main .section-title {
+        color        : var(--accent);
+        border-bottom: 2.5px solid var(--section-border);
+    }
+
+    .cv-sidebar .section-title {
+        color        : var(--sidebar-h2);
+        border-bottom: 1px solid var(--sidebar-border);
+        margin-top   : 24px;
+    }
+
+    .cv-sidebar .section-title:first-child { margin-top: 0; }
 
 .cv-main .section-title {
     color       : var(--accent);
@@ -615,7 +629,7 @@ body {
   <button class="theme-toggle no-print"     onclick="toggleTheme()" title="Dark mode">🌙</button>
   <div class="cv-name">Nils Levillain</div>
   <div class="cv-tagline">Tech Project Manager | Product Owner Analytics @ L'Oréal</div>
-  <div class="cv-contact"><span class="cv-contact-item"><span class="cv-contact-icon">✉</span><a href="mailto:levillain.nils@gmail.com" target="_blank" rel="noopener noreferrer" class="cv-contact-link">levillain.nils@gmail.com</a></span><span class="cv-contact-item"><span class="cv-contact-icon">☎</span>+33 06 69 56 69 37</span><span class="cv-contact-item"><span class="cv-contact-icon">📍</span>Paris, 75015, France</span><span class="cv-contact-item"><span class="cv-contact-icon">in</span><a href="https://linkedin.com/in/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">linkedin.com/in/nils-levillain</a></span><span class="cv-contact-item"><span class="cv-contact-icon">🐙</span><a href="https://github.com/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">github.com/nils-levillain</a></span></div>
+  <div class="cv-contact"><span class="cv-contact-item"><span class="cv-contact-icon">✉</span><a href="mailto:levillain.nils@gmail.com" target="_blank" rel="noopener noreferrer" class="cv-contact-link">levillain.nils@gmail.com</a></span><span class="cv-contact-item"><span class="cv-contact-icon">☎</span>+33 06 69 56 69 37</span><span class="cv-contact-item"><span class="cv-contact-icon">📍</span>Paris, France</span><span class="cv-contact-item"><span class="cv-contact-icon">in</span><a href="https://linkedin.com/in/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">linkedin.com/in/nils-levillain</a></span><span class="cv-contact-item"><span class="cv-contact-icon">🐙</span><a href="https://github.com/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">github.com/nils-levillain</a></span></div>
 </header>
 
 
@@ -625,53 +639,48 @@ body {
     <main class="cv-main">
 <section>
   <div class="section-title">Profile</div>
-  <p class="cv-summary">Tech Project Manager & Technical Product Owner with 3+ years at L'Oréal. Expert in end-to-end tech project delivery in agile, global environments, bridging the gap between technical teams and business stakeholders across multiple zones. Expertise: cloud (GCP), AI/ML, change management, technology partner coordination, and multi-level communication.</p>
+  <p class="cv-summary">Tech Project Manager & Product Owner with 3+ years at L'Oréal. Expert in end-to-end tech project delivery in agile, global environments, bridging technical teams and business stakeholders across multiple zones. Expertise: cloud (GCP), AI/ML, change management, and stakeholder coordination.</p>
 </section>
 <section>
   <div class="section-title">Work Experience</div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Product Owner Analytics – Global Supply Chain</div>
-        <div class="entry-sub">L'Oréal · Permanent · Clichy, France</div>
+        <div class="entry-title">L'Oréal&nbsp;&nbsp;|&nbsp;&nbsp;Product Owner Analytics – Global Supply Chain</div>
       </div>
-      <div class="entry-date">January 2024 – Present</div>
+      <div class="entry-date">Jan. 2024 – Present</div>
     </div>
     <ul>
-      <li>Agile Tech Project Manager: end-to-end delivery of global analytics products across all L'Oréal Zones and Divisions — <span class="kpi-badge">200+ active users</span>; defined and executed the <strong>technical roadmap</strong>.</li>
-      <li>Bridge between tech and business: translated business needs into technical specifications; coordinated multiple <strong>stakeholders</strong> in a global, matrixed organisation (IT Zones, Divisions, Architects).</li>
-      <li>Innovation & AI: <strong>Proof-of-Concepts</strong> in AI/ML (forecasting, Linear Programming, Full-Stack Web App) — from ideation to global deployment; CO2 Transport calculator.</li>
-      <li>Cloud & Data Engineering: <strong>GCP (BigQuery)</strong>, Medallion Architecture, complex SQL, data quality monitoring in production.</li>
-      <li>Deployment & <strong>change management</strong>: Power BI (DAX), Web Apps, adoption & NPS tracking; technology partner coordination.</li>
-      <li>Reporting & impact: KPI definition, budget monitoring, presentation to both technical and business audiences.</li>
+      <li>Agile Tech PM: end-to-end delivery of global analytics products (Fulfillment) — <span class="kpi-badge">200+ users</span> across 5 zones; <strong>technical roadmap</strong> definition & execution.</li>
+      <li>Bridge tech/business: business needs into technical specs; <strong>multi-stakeholder</strong> coordination (IT Zones, Divisions, Architects) in a global matrixed org.</li>
+      <li>AI & Innovation: <strong>AI/ML POCs</strong> (forecasting, Linear Programming, Full-Stack Web App) — from prototype to global deployment; CO2 Transport calculator.</li>
+      <li>Cloud & Data Engineering: <strong>GCP</strong> (BigQuery, Medallion Architecture), complex SQL, data quality monitoring in production.</li>
+      <li>Deployment & <strong>change management</strong>: Power BI (DAX), Web Apps, NPS tracking; technology partner coordination.</li>
     </ul>
   </div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Supply Chain Project Engineer – WMS Key User</div>
-        <div class="entry-sub">L'Oréal · Permanent · Croissy-Beaubourg, France</div>
+        <div class="entry-title">L'Oréal&nbsp;&nbsp;|&nbsp;&nbsp;Supply Chain Project Engineer – WMS Key User</div>
       </div>
-      <div class="entry-date">September 2022 – December 2023</div>
+      <div class="entry-date">Sept. 2022 – Dec. 2023</div>
     </div>
     <ul>
-      <li>Tech project delivery: WMS replacement in distribution centre (<strong>SAP → Manhattan</strong>), coordinating IT teams, operations, and <strong>external partners</strong> across multiple sites.</li>
-      <li>BI development & reporting: <span class="kpi-badge">20+</span> impactful reports, European developer community leadership, inter-system data migration.</li>
-      <li>Testing & quality: definition and execution of <span class="kpi-badge">100+</span> test cases, progress KPI tracking.</li>
-      <li><strong>Change management</strong>: documentation, <span class="kpi-badge">~50h</span> training for operators and team leaders, deployment support and continuous optimisation.</li>
+      <li><strong>SAP → Manhattan</strong> WMS replacement: coordinated IT, ops & external partners — <span class="kpi-badge">100+</span> test cases defined & executed.</li>
+      <li><span class="kpi-badge">20+</span> impactful BI reports; European developer community leadership; inter-system data migration.</li>
+      <li><strong>Change management</strong>: documentation & <span class="kpi-badge">~50h</span> training for operators and team leaders.</li>
     </ul>
   </div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Copacking Planner</div>
-        <div class="entry-sub">L'Oréal · Internship · Levallois-Perret, France</div>
+        <div class="entry-title">L'Oréal&nbsp;&nbsp;|&nbsp;&nbsp;Copacking Planner</div>
       </div>
-      <div class="entry-date">January 2022 – July 2022</div>
+      <div class="entry-date">Jan. 2022 – Jul. 2022</div>
     </div>
     <ul>
-      <li>Planning, procurement and logistics for Garnier's promotional catalogue — <span class="kpi-badge">99% service rate</span>.</li>
-      <li><span class="kpi-badge">−20%</span> stock discrepancy reduction with main co-packer through monitoring dashboards.</li>
+      <li>Planning, procurement & logistics for Garnier's promo catalogue — <span class="kpi-badge">99% service rate</span>.</li>
+      <li><span class="kpi-badge">−20%</span> stock gap reduction with co-packer through monitoring dashboards.</li>
     </ul>
   </div>
 </section>
@@ -680,26 +689,26 @@ body {
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">MSc – Industrial Engineering, Supply Chain & Logistics</div>
-        <div class="entry-sub">Grenoble INP – Génie Industriel · Grenoble, France</div>
+        <div class="entry-title">Grenoble INP – Génie Industriel</div>
+        <div class="entry-sub">Engineering Degree (MSc) · Supply Chain, Data & Information Systems</div>
       </div>
       <div class="entry-date">2019 – 2022</div>
     </div>
     <ul>
-      <li>Industrial organisation, ERP (SAP), Industry 4.0, Lean manufacturing.</li>
-      <li>Data science, operations research, project management.</li>
+      <li>Top French Engineering School — Grande École programme.</li>
+      <li>Specialisation: ERP (SAP), operations research, data science, project management.</li>
     </ul>
   </div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">University Exchange – Industrial Engineering & Computer Science</div>
-        <div class="entry-sub">École Polytechnique de Montréal · Montréal, Canada</div>
+        <div class="entry-title">École Polytechnique de Montréal</div>
+        <div class="entry-sub">Academic Exchange · Industrial Engineering & Computer Science</div>
       </div>
       <div class="entry-date">2021 – 2022</div>
     </div>
     <ul>
-      <li>Enterprise resource planning (SAP), data mining, machine learning.</li>
+      <li>SAP, data mining, machine learning, tech project management.</li>
     </ul>
   </div>
 </section>
@@ -710,28 +719,25 @@ body {
     <aside class="cv-sidebar">
 <section>
   <div class="section-title">Skills</div>
-  <div class="skill-category">Tech Project Management</div>
-  <div class="tags"><span class="tag">Agile / Scrum</span><span class="tag">Roadmap</span><span class="tag">PI Planning</span><span class="tag">Stakeholder Management</span><span class="tag">Change Management</span><span class="tag">Product Management</span><span class="tag">UX/UI Design</span></div>
+  <div class="skill-category">Project Delivery</div>
+  <div class="tags"><span class="tag">Agile / Scrum</span><span class="tag">Stakeholder Management</span><span class="tag">Change Management</span><span class="tag">UX/UI Design</span></div>
   <div class="skill-category">Cloud & Data</div>
-  <div class="tags"><span class="tag">GCP (BigQuery)</span><span class="tag">SQL</span><span class="tag">Python (ML/Optimisation)</span><span class="tag">Power BI (DAX, M)</span><span class="tag">GitHub (CI/CD)</span></div>
-  <div class="skill-category">Platforms & Tools</div>
-  <div class="tags"><span class="tag">SAP (FI, CO, MM, SD, APO)</span><span class="tag">Manhattan WMS</span><span class="tag">MS Office avancé (Excel, Project)</span></div>
+  <div class="tags"><span class="tag">GCP (BigQuery)</span><span class="tag">SQL</span><span class="tag">Python (ML)</span><span class="tag">Power BI (DAX)</span></div>
+  <div class="skill-category">Platforms</div>
+  <div class="tags"><span class="tag">SAP</span><span class="tag">Manhattan WMS</span><span class="tag">MS Office (Excel, Project)</span></div>
 </section>
 <section>
   <div class="section-title">Languages</div>
   <div class="lang-item">
     <div class="lang-name">Français</div>
-    <div class="lang-dots"><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span></div>
     <div class="lang-level">Native</div>
   </div>
   <div class="lang-item">
     <div class="lang-name">Anglais / English</div>
-    <div class="lang-dots"><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span></div>
-    <div class="lang-level">C2 — TOEFL ITP 624, Cambridge Certificate</div>
+    <div class="lang-level">C2 — TOEFL ITP 624</div>
   </div>
   <div class="lang-item">
     <div class="lang-name">Español / Espagnol</div>
-    <div class="lang-dots"><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot"></span><span class="lang-dot"></span></div>
     <div class="lang-level">B1/B2</div>
   </div>
 </section>
@@ -740,7 +746,7 @@ body {
   <div class="assoc-entry">
     <div class="assoc-role">President of the Sports Committee</div>
     <div class="assoc-org">Grenoble INP · 2020 – 2021</div>
-    <div class="assoc-desc">Management of 27 people over 18 months — budget managed: €25K.</div>
+    <div class="assoc-desc">Management of 27 people over 18 months — budget: €25K.</div>
   </div>
 </section>
 <section>

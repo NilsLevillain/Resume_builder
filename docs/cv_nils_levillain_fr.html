@@ -134,9 +134,10 @@ document.addEventListener('DOMContentLoaded', initParticles);
     --tag-text        : #1d4ed8;
     --tag-border      : #bfdbfe;
 
-    --kpi-bg          : #fffbeb;
-    --kpi-text        : #b45309;
-    --kpi-border      : #fde68a;
+    /* ── KPI badges (palette configurable dans cv_config.py) ── */
+    --kpi-bg          : #dbeafe;
+    --kpi-text        : #1e40af;
+    --kpi-border      : #93c5fd;
 
     --radius-card     : 8px;
     --radius-tag      : 100px;
@@ -332,14 +333,27 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .section-title {
-    font-size     : 8.5pt;
-    font-weight   : bold;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top    : 22px;
-    margin-bottom : 12px;
-    padding-bottom: 6px;
-}
+        font-size      : 10pt;
+        font-weight    : bold;
+        text-transform : uppercase;
+        letter-spacing : 2.5px;
+        margin-top     : 24px;
+        margin-bottom  : 14px;
+        padding-bottom : 8px;
+    }
+
+    .cv-main .section-title {
+        color        : var(--accent);
+        border-bottom: 2.5px solid var(--section-border);
+    }
+
+    .cv-sidebar .section-title {
+        color        : var(--sidebar-h2);
+        border-bottom: 1px solid var(--sidebar-border);
+        margin-top   : 24px;
+    }
+
+    .cv-sidebar .section-title:first-child { margin-top: 0; }
 
 .cv-main .section-title {
     color       : var(--accent);
@@ -615,7 +629,7 @@ body {
   <button class="theme-toggle no-print"     onclick="toggleTheme()" title="Dark mode">🌙</button>
   <div class="cv-name">Nils Levillain</div>
   <div class="cv-tagline">Tech Project Manager | Product Owner Analytics @ L'Oréal</div>
-  <div class="cv-contact"><span class="cv-contact-item"><span class="cv-contact-icon">✉</span><a href="mailto:levillain.nils@gmail.com" target="_blank" rel="noopener noreferrer" class="cv-contact-link">levillain.nils@gmail.com</a></span><span class="cv-contact-item"><span class="cv-contact-icon">☎</span>+33 06 69 56 69 37</span><span class="cv-contact-item"><span class="cv-contact-icon">📍</span>Paris, 75015, France</span><span class="cv-contact-item"><span class="cv-contact-icon">in</span><a href="https://linkedin.com/in/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">linkedin.com/in/nils-levillain</a></span><span class="cv-contact-item"><span class="cv-contact-icon">🐙</span><a href="https://github.com/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">github.com/nils-levillain</a></span></div>
+  <div class="cv-contact"><span class="cv-contact-item"><span class="cv-contact-icon">✉</span><a href="mailto:levillain.nils@gmail.com" target="_blank" rel="noopener noreferrer" class="cv-contact-link">levillain.nils@gmail.com</a></span><span class="cv-contact-item"><span class="cv-contact-icon">☎</span>+33 06 69 56 69 37</span><span class="cv-contact-item"><span class="cv-contact-icon">📍</span>Paris, France</span><span class="cv-contact-item"><span class="cv-contact-icon">in</span><a href="https://linkedin.com/in/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">linkedin.com/in/nils-levillain</a></span><span class="cv-contact-item"><span class="cv-contact-icon">🐙</span><a href="https://github.com/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">github.com/nils-levillain</a></span></div>
 </header>
 
 
@@ -625,53 +639,48 @@ body {
     <main class="cv-main">
 <section>
   <div class="section-title">Profil</div>
-  <p class="cv-summary">Tech Project Manager & Technical Product Owner avec 3+ ans chez L'Oréal. Expert en pilotage de projets tech end-to-end dans un environnement agile et international, je fais le pont entre équipes techniques et métier à l'échelle de plusieurs zones géographiques. Expertise : cloud (GCP), IA/ML, conduite du changement, gestion de partenaires technologiques et communication multi-niveaux.</p>
+  <p class="cv-summary">Tech Project Manager & Product Owner avec 3+ ans chez L'Oréal. Expert en pilotage de projets tech dans un environnement agile et international, je fais le pont entre équipes techniques et métier à l'échelle mondiale. Expertise : cloud (GCP), IA/ML, conduite du changement et gestion multi-parties prenantes.</p>
 </section>
 <section>
   <div class="section-title">Expériences Professionnelles</div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Product Owner Analytics – Global Supply Chain</div>
-        <div class="entry-sub">L'Oréal · CDI · Clichy, Île-de-France</div>
+        <div class="entry-title">L'Oréal&nbsp;&nbsp;|&nbsp;&nbsp;Product Owner Analytics – Global Supply Chain</div>
       </div>
-      <div class="entry-date">Janvier 2024 – Aujourd'hui</div>
+      <div class="entry-date">Janv. 2024 – Aujourd'hui</div>
     </div>
     <ul>
-      <li>Tech Project Manager agile : pilotage end-to-end de produits analytiques mondiaux pour toutes les Zones et Divisions L'Oréal — <span class="kpi-badge">+200 utilisateurs actifs</span> ; définition et exécution de la <strong>roadmap technique</strong>.</li>
-      <li>Pont technique / métier : traduction des besoins métier en spécifications techniques ; coordination de multiples <strong>parties prenantes</strong> dans un environnement international et matriciel (IT Zones, Divisions, Architectes).</li>
-      <li>Innovation & IA : <strong>Proof-of-Concepts</strong> en IA/ML (forecasting, Programmation Linéaire, Web App Full-Stack) — de l'idéation au déploiement global ; calculateur CO2 Transport.</li>
-      <li>Cloud & Data Engineering : <strong>GCP (BigQuery)</strong>, Architecture Médaillon, SQL complexe, suivi qualité des données en production.</li>
-      <li>Déploiement & <strong>conduite du changement</strong> : Power BI (DAX), Web Apps, tracking adoption & NPS ; coordination de partenaires technologiques.</li>
-      <li>Reporting & impact : définition de KPIs, pilotage budgétaire, restitution aux équipes tech et métier.</li>
+      <li>Agile Tech PM : pilotage end-to-end de produits analytiques mondiaux (Fulfillment) — <span class="kpi-badge">+200 utilisateurs</span> dans 5 zones géographiques ; définition & exécution de la <strong>roadmap technique</strong>.</li>
+      <li>Pont tech/métier : traduction des besoins en specs techniques ; coordination <strong>multi-parties prenantes</strong> (IT Zones, Divisions, Architectes) en environnement matriciel global.</li>
+      <li>AI & Innovation : <strong>POCs IA/ML</strong> (forecasting, Programmation Linéaire, Web App Full-Stack) — du prototype au déploiement global ; calculateur CO2 Transport.</li>
+      <li>Cloud & Data Engineering : <strong>GCP</strong> (BigQuery, Architecture Médaillon), SQL complexe, data quality monitoring en production.</li>
+      <li>Déploiement & <strong>change management</strong> : Power BI (DAX), Web Apps, NPS tracking ; coordination partenaires technologiques.</li>
     </ul>
   </div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Ingénieur Projets Supply Chain – WMS Key User</div>
-        <div class="entry-sub">L'Oréal · CDI · Croissy-Beaubourg, Île-de-France</div>
+        <div class="entry-title">L'Oréal&nbsp;&nbsp;|&nbsp;&nbsp;Ingénieur Projets Supply Chain – WMS Key User</div>
       </div>
-      <div class="entry-date">Septembre 2022 – Décembre 2023</div>
+      <div class="entry-date">Sept. 2022 – Déc. 2023</div>
     </div>
     <ul>
-      <li>Chef de projet tech : remplacement du WMS en centrale de distribution (<strong>SAP → Manhattan</strong>), coordinant équipes IT, opérations et <strong>partenaires externes</strong> dans un environnement multi-sites.</li>
-      <li>Développement BI & reporting : <span class="kpi-badge">+20 rapports</span> impactants, animation de la communauté de développeurs Europe, migration de données inter-systèmes.</li>
-      <li>Tests & qualité : définition et exécution de <span class="kpi-badge">+100 cas de test</span>, suivi des KPIs d'avancement.</li>
-      <li><strong>Conduite du changement</strong> : documentation, <span class="kpi-badge">~50h</span> de formation opérateurs et chefs d'équipe, accompagnement déploiement et optimisation continue.</li>
+      <li>Remplacement WMS <strong>SAP → Manhattan</strong> : coordination IT, ops & partenaires externes — <span class="kpi-badge">+100 cas de test</span> définis & exécutés.</li>
+      <li><span class="kpi-badge">+20 rapports BI</span> impactants ; animation communauté dev Europe ; migration données inter-systèmes.</li>
+      <li><strong>Conduite du changement</strong> : documentation & <span class="kpi-badge">~50h</span> de formation opérateurs et chefs d'équipe.</li>
     </ul>
   </div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Copacking Planner</div>
-        <div class="entry-sub">L'Oréal · Stage · Levallois-Perret, Île-de-France</div>
+        <div class="entry-title">L'Oréal&nbsp;&nbsp;|&nbsp;&nbsp;Copacking Planner</div>
       </div>
-      <div class="entry-date">Janvier 2022 – Juillet 2022</div>
+      <div class="entry-date">Janv. 2022 – Juil. 2022</div>
     </div>
     <ul>
-      <li>Planification, approvisionnement et logistique du catalogue promotionnel Garnier — <span class="kpi-badge">taux de service 99%</span>.</li>
-      <li>Réduction <span class="kpi-badge">−20%</span> des écarts de stock avec le principal copacker via tableaux de bord de suivi.</li>
+      <li>Planification, appro & logistique catalogue promo Garnier — <span class="kpi-badge">99% service rate</span>.</li>
+      <li>Réduction <span class="kpi-badge">−20%</span> des écarts de stock copacker via dashboards de suivi.</li>
     </ul>
   </div>
 </section>
@@ -680,26 +689,26 @@ body {
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Master – Génie Industriel, spécialité Logistique & Supply Chain</div>
-        <div class="entry-sub">Grenoble INP – Génie Industriel · Grenoble, France</div>
+        <div class="entry-title">Grenoble INP – Génie Industriel</div>
+        <div class="entry-sub">Diplôme d'Ingénieur · Supply Chain, Data & Systèmes d'Information</div>
       </div>
       <div class="entry-date">2019 – 2022</div>
     </div>
     <ul>
-      <li>Organisation industrielle, ERP (SAP), industrie 4.0, Lean manufacturing.</li>
-      <li>Data science, recherche opérationnelle, gestion de projet.</li>
+      <li>Top école française de Génie Industriel — programme Grande École.</li>
+      <li>Spécialisation : ERP (SAP), recherche opérationnelle, data science, gestion de projet.</li>
     </ul>
   </div>
   <div class="entry-card entry">
     <div class="entry-header">
       <div class="entry-left">
-        <div class="entry-title">Échange universitaire – Génie Industriel & Génie Informatique</div>
-        <div class="entry-sub">École Polytechnique de Montréal · Montréal, Canada</div>
+        <div class="entry-title">École Polytechnique de Montréal</div>
+        <div class="entry-sub">Échange Académique · Génie Industriel & Informatique</div>
       </div>
       <div class="entry-date">2021 – 2022</div>
     </div>
     <ul>
-      <li>Systèmes de gestion d'entreprise (SAP), data mining, machine learning.</li>
+      <li>SAP, data mining, machine learning, gestion de projet tech.</li>
     </ul>
   </div>
 </section>
@@ -710,28 +719,25 @@ body {
     <aside class="cv-sidebar">
 <section>
   <div class="section-title">Compétences</div>
-  <div class="skill-category">Gestion de Projet Tech</div>
-  <div class="tags"><span class="tag">Agile / Scrum</span><span class="tag">Roadmap</span><span class="tag">PI Planning</span><span class="tag">Stakeholder Management</span><span class="tag">Change Management</span><span class="tag">Product Management</span><span class="tag">UX/UI Design</span></div>
+  <div class="skill-category">Gestion de Projet</div>
+  <div class="tags"><span class="tag">Agile / Scrum</span><span class="tag">Stakeholder Management</span><span class="tag">Change Management</span><span class="tag">UX/UI Design</span></div>
   <div class="skill-category">Cloud & Data</div>
-  <div class="tags"><span class="tag">GCP (BigQuery)</span><span class="tag">SQL</span><span class="tag">Python (ML/Optimisation)</span><span class="tag">Power BI (DAX, M)</span><span class="tag">GitHub (CI/CD)</span></div>
-  <div class="skill-category">Plateformes & Outils</div>
-  <div class="tags"><span class="tag">SAP (FI, CO, MM, SD, APO)</span><span class="tag">Manhattan WMS</span><span class="tag">MS Office avancé (Excel, Project)</span></div>
+  <div class="tags"><span class="tag">GCP (BigQuery)</span><span class="tag">SQL</span><span class="tag">Python (ML)</span><span class="tag">Power BI (DAX)</span></div>
+  <div class="skill-category">Plateformes</div>
+  <div class="tags"><span class="tag">SAP</span><span class="tag">Manhattan WMS</span><span class="tag">MS Office (Excel, Project)</span></div>
 </section>
 <section>
   <div class="section-title">Langues</div>
   <div class="lang-item">
     <div class="lang-name">Français</div>
-    
     <div class="lang-level">Langue maternelle</div>
   </div>
   <div class="lang-item">
     <div class="lang-name">Anglais / English</div>
-    <div class="lang-dots"><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span></div>
-    <div class="lang-level">C2 — TOEFL ITP 624, Cambridge Certificate</div>
+    <div class="lang-level">C2 — TOEFL ITP 624</div>
   </div>
   <div class="lang-item">
     <div class="lang-name">Español / Espagnol</div>
-    <div class="lang-dots"><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot"></span><span class="lang-dot"></span></div>
     <div class="lang-level">B1/B2</div>
   </div>
 </section>
@@ -740,7 +746,7 @@ body {
   <div class="assoc-entry">
     <div class="assoc-role">Président du Bureau des Sports</div>
     <div class="assoc-org">Grenoble INP · 2020 – 2021</div>
-    <div class="assoc-desc">Management de 27 personnes sur 1,5 an — budget géré : 25K€.</div>
+    <div class="assoc-desc">Management de 27 personnes sur 1,5 an — budget : 25K€.</div>
   </div>
 </section>
 <section>

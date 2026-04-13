@@ -2,8 +2,9 @@
 🎨  Design system — Modern CV
      Light / Dark mode · 2 colonnes · Cards · Tags · KPI badges
 """
-from data.cv_config import ACCENT_COLOR, SIDEBAR_COLOR, FONT_FAMILY, FONT_SIZE_BASE
-
+from data.cv_config import (
+    ACCENT_COLOR, SIDEBAR_COLOR, FONT_FAMILY, FONT_SIZE_BASE, KPI_BG, KPI_TEXT, KPI_BORDER,
+)
 # ── JavaScript : toggle thème + particules ────────────────────
 THEME_JS = """
 (function () {
@@ -138,9 +139,10 @@ def get_styles() -> str:
     --tag-text        : #1d4ed8;
     --tag-border      : #bfdbfe;
 
-    --kpi-bg          : #fffbeb;
-    --kpi-text        : #b45309;
-    --kpi-border      : #fde68a;
+    /* ── KPI badges (palette configurable dans cv_config.py) ── */
+    --kpi-bg          : {KPI_BG};
+    --kpi-text        : {KPI_TEXT};
+    --kpi-border      : {KPI_BORDER};
 
     --radius-card     : 8px;
     --radius-tag      : 100px;
@@ -336,14 +338,27 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .section-title {{
-    font-size     : 8.5pt;
-    font-weight   : bold;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top    : 22px;
-    margin-bottom : 12px;
-    padding-bottom: 6px;
+        font-size      : 10pt;
+        font-weight    : bold;
+        text-transform : uppercase;
+        letter-spacing : 2.5px;
+        margin-top     : 24px;
+        margin-bottom  : 14px;
+        padding-bottom : 8px;
 }}
+
+.cv-main .section-title {{
+        color        : var(--accent);
+        border-bottom: 2.5px solid var(--section-border);
+}}
+
+.cv-sidebar .section-title {{
+        color        : var(--sidebar-h2);
+        border-bottom: 1px solid var(--sidebar-border);
+        margin-top   : 24px;
+    }}
+
+.cv-sidebar .section-title:first-child {{ margin-top: 0; }}
 
 .cv-main .section-title {{
     color       : var(--accent);

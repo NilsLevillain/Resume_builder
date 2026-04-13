@@ -3,7 +3,6 @@
     Adapté pour : Website Factory Tech Project Manager @ L'Oréal
 """
 
-# ── Helpers ───────────────────────────────────────────────────
 def bi(fr: str, en: str) -> dict:
     return {"fr": fr, "en": en}
 
@@ -25,9 +24,9 @@ PERSONAL = {
     ),
     "email"   : "levillain.nils@gmail.com",
     "phone"   : "+33 06 69 56 69 37",
-    "location": "Paris, 75010, France",
+    "location": "Paris, France",
     "linkedin": "linkedin.com/in/nils-levillain",
-    "github"  : "github.com/nils-levillain",       # ← adapter si username différent
+    "github"  : "github.com/nils-levillain",
 }
 
 # ══════════════════════════════════════════════════════════════
@@ -36,18 +35,16 @@ PERSONAL = {
 
 SUMMARY = bi(
     fr=(
-        "Tech Project Manager & Technical Product Owner avec 3+ ans chez L'Oréal. "
-        "Expert en pilotage de projets tech end-to-end dans un environnement agile "
-        "et international, je fais le pont entre équipes techniques et métier à l'échelle "
-        "de plusieurs zones géographiques. Expertise : cloud (GCP), IA/ML, conduite du "
-        "changement, gestion de partenaires technologiques et communication multi-niveaux."
+        "Tech Project Manager & Product Owner avec 3+ ans chez L'Oréal. "
+        "Expert en pilotage de projets tech dans un environnement agile et international, "
+        "je fais le pont entre équipes techniques et métier à l'échelle mondiale. "
+        "Expertise : cloud (GCP), IA/ML, conduite du changement et gestion multi-parties prenantes."
     ),
     en=(
-        "Tech Project Manager & Technical Product Owner with 3+ years at L'Oréal. "
+        "Tech Project Manager & Product Owner with 3+ years at L'Oréal. "
         "Expert in end-to-end tech project delivery in agile, global environments, "
-        "bridging the gap between technical teams and business stakeholders across "
-        "multiple zones. Expertise: cloud (GCP), AI/ML, change management, technology "
-        "partner coordination, and multi-level communication."
+        "bridging technical teams and business stakeholders across multiple zones. "
+        "Expertise: cloud (GCP), AI/ML, change management, and stakeholder coordination."
     ),
 )
 
@@ -57,117 +54,97 @@ SUMMARY = bi(
 
 EXPERIENCE = [
     {
-        "title"   : bi(
+        "title"  : bi(
             "Product Owner Analytics – Global Supply Chain",
             "Product Owner Analytics – Global Supply Chain",
         ),
-        "company" : "L'Oréal",
-        "type"    : bi("CDI", "Permanent"),
-        "location": bi("Clichy, Île-de-France", "Clichy, France"),
-        "start"   : bi("Janvier 2024",  "January 2024"),
-        "end"     : bi("Aujourd'hui",   "Present"),
-        "bullets" : [
+        "company": "L'Oréal",
+        "start"  : bi("Janv. 2024",    "Jan. 2024"),
+        "end"    : bi("Aujourd'hui",   "Present"),
+        "bullets": [
             bi(
-                f"Tech Project Manager agile : pilotage end-to-end de produits analytiques "
-                f"mondiaux pour toutes les Zones et Divisions L'Oréal — {kpi('+200 utilisateurs '
-                f'actifs')} ; définition et exécution de la {bold('roadmap technique')}.",
-                f"Agile Tech Project Manager: end-to-end delivery of global analytics products "
-                f"across all L'Oréal Zones and Divisions — {kpi('200+ active users')}; "
-                f"defined and executed the {bold('technical roadmap')}.",
+                f"Agile Tech PM : pilotage end-to-end de produits analytiques mondiaux "
+                f"(Fulfillment) — {kpi('+200 utilisateurs')} dans 5 zones géographiques ; "
+                f"définition & exécution de la {bold('roadmap technique')}.",
+                f"Agile Tech PM: end-to-end delivery of global analytics products "
+                f"(Fulfillment) — {kpi('200+ users')} across 5 zones; "
+                f"{bold('technical roadmap')} definition & execution.",
             ),
             bi(
-                f"Pont technique / métier : traduction des besoins métier en spécifications "
-                f"techniques ; coordination de multiples {bold('parties prenantes')} dans un "
-                f"environnement international et matriciel (IT Zones, Divisions, Architectes).",
-                f"Bridge between tech and business: translated business needs into technical "
-                f"specifications; coordinated multiple {bold('stakeholders')} in a global, "
-                f"matrixed organisation (IT Zones, Divisions, Architects).",
+                f"Pont tech/métier : traduction des besoins en specs techniques ; "
+                f"coordination {bold('multi-parties prenantes')} (IT Zones, Divisions, "
+                f"Architectes) en environnement matriciel global.",
+                f"Bridge tech/business: business needs into technical specs; "
+                f"{bold('multi-stakeholder')} coordination (IT Zones, Divisions, "
+                f"Architects) in a global matrixed org.",
             ),
             bi(
-                f"Innovation & IA : {bold('Proof-of-Concepts')} en IA/ML (forecasting, "
-                f"Programmation Linéaire, Web App Full-Stack) — de l'idéation au déploiement "
-                f"global ; calculateur CO2 Transport.",
-                f"Innovation & AI: {bold('Proof-of-Concepts')} in AI/ML (forecasting, "
-                f"Linear Programming, Full-Stack Web App) — from ideation to global "
-                f"deployment; CO2 Transport calculator.",
+                f"AI & Innovation : {bold('POCs IA/ML')} (forecasting, Programmation "
+                f"Linéaire, Web App Full-Stack) — du prototype au déploiement global ; "
+                f"calculateur CO2 Transport.",
+                f"AI & Innovation: {bold('AI/ML POCs')} (forecasting, Linear Programming, "
+                f"Full-Stack Web App) — from prototype to global deployment; "
+                f"CO2 Transport calculator.",
             ),
             bi(
-                f"Cloud & Data Engineering : {bold('GCP (BigQuery)')}, Architecture Médaillon, "
-                f"SQL complexe, suivi qualité des données en production.",
-                f"Cloud & Data Engineering: {bold('GCP (BigQuery)')}, Medallion Architecture, "
-                f"complex SQL, data quality monitoring in production.",
+                f"Cloud & Data Engineering : {bold('GCP')} (BigQuery, Architecture "
+                f"Médaillon), SQL complexe, data quality monitoring en production.",
+                f"Cloud & Data Engineering: {bold('GCP')} (BigQuery, Medallion "
+                f"Architecture), complex SQL, data quality monitoring in production.",
             ),
             bi(
-                f"Déploiement & {bold('conduite du changement')} : Power BI (DAX), Web Apps, "
-                f"tracking adoption & NPS ; coordination de partenaires technologiques.",
-                f"Deployment & {bold('change management')}: Power BI (DAX), Web Apps, "
-                f"adoption & NPS tracking; technology partner coordination.",
-            ),
-            bi(
-                f"Reporting & impact : définition de KPIs, pilotage budgétaire, "
-                f"restitution aux équipes tech et métier.",
-                f"Reporting & impact: KPI definition, budget monitoring, "
-                f"presentation to both technical and business audiences.",
+                f"Déploiement & {bold('change management')} : Power BI (DAX), "
+                f"Web Apps, NPS tracking ; coordination partenaires technologiques.",
+                f"Deployment & {bold('change management')}: Power BI (DAX), "
+                f"Web Apps, NPS tracking; technology partner coordination.",
             ),
         ],
     },
     {
-        "title"   : bi(
+        "title"  : bi(
             "Ingénieur Projets Supply Chain – WMS Key User",
             "Supply Chain Project Engineer – WMS Key User",
         ),
-        "company" : "L'Oréal",
-        "type"    : bi("CDI", "Permanent"),
-        "location": bi("Croissy-Beaubourg, Île-de-France", "Croissy-Beaubourg, France"),
-        "start"   : bi("Septembre 2022", "September 2022"),
-        "end"     : bi("Décembre 2023",  "December 2023"),
-        "bullets" : [
+        "company": "L'Oréal",
+        "start"  : bi("Sept. 2022", "Sept. 2022"),
+        "end"    : bi("Déc. 2023",  "Dec. 2023"),
+        "bullets": [
             bi(
-                f"Chef de projet tech : remplacement du WMS en centrale de distribution "
-                f"({bold('SAP → Manhattan')}), coordinant équipes IT, opérations et "
-                f"{bold('partenaires externes')} dans un environnement multi-sites.",
-                f"Tech project delivery: WMS replacement in distribution centre "
-                f"({bold('SAP → Manhattan')}), coordinating IT teams, operations, "
-                f"and {bold('external partners')} across multiple sites.",
+                f"Remplacement WMS {bold('SAP → Manhattan')} : coordination IT, "
+                f"ops & partenaires externes — {kpi('+100 cas de test')} définis & exécutés.",
+                f"{bold('SAP → Manhattan')} WMS replacement: coordinated IT, ops "
+                f"& external partners — {kpi('100+')} test cases defined & executed.",
             ),
             bi(
-                f"Développement BI & reporting : {kpi('+20 rapports')} impactants, animation "
-                f"de la communauté de développeurs Europe, migration de données inter-systèmes.",
-                f"BI development & reporting: {kpi('20+')} impactful reports, European "
-                f"developer community leadership, inter-system data migration.",
+                f"{kpi('+20 rapports BI')} impactants ; animation communauté "
+                f"dev Europe ; migration données inter-systèmes.",
+                f"{kpi('20+')} impactful BI reports; European developer community "
+                f"leadership; inter-system data migration.",
             ),
             bi(
-                f"Tests & qualité : définition et exécution de {kpi('+100 cas de test')}, "
-                f"suivi des KPIs d'avancement.",
-                f"Testing & quality: definition and execution of {kpi('100+')} test cases, "
-                f"progress KPI tracking.",
-            ),
-            bi(
-                f"{bold('Conduite du changement')} : documentation, {kpi('~50h')} de formation "
-                f"opérateurs et chefs d'équipe, accompagnement déploiement et optimisation continue.",
-                f"{bold('Change management')}: documentation, {kpi('~50h')} training for "
-                f"operators and team leaders, deployment support and continuous optimisation.",
+                f"{bold('Conduite du changement')} : documentation & "
+                f"{kpi('~50h')} de formation opérateurs et chefs d'équipe.",
+                f"{bold('Change management')}: documentation & "
+                f"{kpi('~50h')} training for operators and team leaders.",
             ),
         ],
     },
     {
-        "title"   : "Copacking Planner",
-        "company" : "L'Oréal",
-        "type"    : bi("Stage", "Internship"),
-        "location": bi("Levallois-Perret, Île-de-France", "Levallois-Perret, France"),
-        "start"   : bi("Janvier 2022", "January 2022"),
-        "end"     : bi("Juillet 2022", "July 2022"),
-        "bullets" : [
+        "title"  : "Copacking Planner",
+        "company": "L'Oréal",
+        "start"  : bi("Janv. 2022", "Jan. 2022"),
+        "end"    : bi("Juil. 2022", "Jul. 2022"),
+        "bullets": [
             bi(
-                f"Planification, approvisionnement et logistique du catalogue promotionnel "
-                f"Garnier — {kpi('taux de service 99%')}.",
-                f"Planning, procurement and logistics for Garnier's promotional "
+                f"Planification, appro & logistique catalogue promo Garnier "
+                f"— {kpi('99% service rate')}.",
+                f"Planning, procurement & logistics for Garnier's promo "
                 f"catalogue — {kpi('99% service rate')}.",
             ),
             bi(
-                f"Réduction {kpi('−20%')} des écarts de stock avec le principal copacker "
-                f"via tableaux de bord de suivi.",
-                f"{kpi('−20%')} stock discrepancy reduction with main co-packer "
+                f"Réduction {kpi('−20%')} des écarts de stock copacker "
+                f"via dashboards de suivi.",
+                f"{kpi('−20%')} stock gap reduction with co-packer "
                 f"through monitoring dashboards.",
             ),
         ],
@@ -180,68 +157,70 @@ EXPERIENCE = [
 
 EDUCATION = [
     {
-        "degree"  : bi(
-            "Master – Génie Industriel, spécialité Logistique & Supply Chain",
-            "MSc – Industrial Engineering, Supply Chain & Logistics",
+        "degree" : bi(
+            "Diplôme d'Ingénieur · Supply Chain, Data & Systèmes d'Information",
+            "Engineering Degree (MSc) · Supply Chain, Data & Information Systems",
         ),
-        "school"  : "Grenoble INP – Génie Industriel",
-        "location": "Grenoble, France",
-        "start"   : "2019",
-        "end"     : "2022",
-        "bullets" : [
+        "school" : "Grenoble INP – Génie Industriel",
+        "start"  : "2019",
+        "end"    : "2022",
+        "bullets": [
             bi(
-                "Organisation industrielle, ERP (SAP), industrie 4.0, Lean manufacturing.",
-                "Industrial organisation, ERP (SAP), Industry 4.0, Lean manufacturing.",
+                "Top école française de Génie Industriel — programme Grande École.",
+                "Top French Engineering School — Grande École programme.",
             ),
             bi(
-                "Data science, recherche opérationnelle, gestion de projet.",
-                "Data science, operations research, project management.",
+                "Spécialisation : ERP (SAP), recherche opérationnelle, data science, gestion de projet.",
+                "Specialisation: ERP (SAP), operations research, data science, project management.",
             ),
         ],
     },
     {
-        "degree"  : bi(
-            "Échange universitaire – Génie Industriel & Génie Informatique",
-            "University Exchange – Industrial Engineering & Computer Science",
+        "degree" : bi(
+            "Échange Académique · Génie Industriel & Informatique",
+            "Academic Exchange · Industrial Engineering & Computer Science",
         ),
-        "school"  : "École Polytechnique de Montréal",
-        "location": "Montréal, Canada",
-        "start"   : "2021",
-        "end"     : "2022",
-        "bullets" : [
+        "school" : "École Polytechnique de Montréal",
+        "start"  : "2021",
+        "end"    : "2022",
+        "bullets": [
             bi(
-                "Systèmes de gestion d'entreprise (SAP), data mining, machine learning.",
-                "Enterprise resource planning (SAP), data mining, machine learning.",
+                "SAP, data mining, machine learning, gestion de projet tech.",
+                "SAP, data mining, machine learning, tech project management.",
             ),
         ],
     },
 ]
 
 # ══════════════════════════════════════════════════════════════
-#  COMPÉTENCES  (alignées job offer WSF)
+#  COMPÉTENCES  (skills distincts, sans redondance)
 # ══════════════════════════════════════════════════════════════
 
 SKILLS = [
     {
-        "category": bi("Gestion de Projet Tech", "Tech Project Management"),
+        "category": bi("Gestion de Projet", "Project Delivery"),
         "items"   : [
-            "Agile / Scrum", "Roadmap", "PI Planning",
-            "Stakeholder Management", "Change Management",
-            "Product Management", "UX/UI Design",
+            "Agile / Scrum",
+            "Stakeholder Management",
+            "Change Management",
+            "UX/UI Design",
         ],
     },
     {
         "category": bi("Cloud & Data", "Cloud & Data"),
         "items"   : [
-            "GCP (BigQuery)", "SQL", "Python (ML/Optimisation)",
-            "Power BI (DAX, M)", "GitHub (CI/CD)",
+            "GCP (BigQuery)",
+            "SQL",
+            "Python (ML)",
+            "Power BI (DAX)",
         ],
     },
     {
-        "category": bi("Plateformes & Outils", "Platforms & Tools"),
+        "category": bi("Plateformes", "Platforms"),
         "items"   : [
-            "SAP (FI, CO, MM, SD, APO)", "Manhattan WMS",
-            "MS Office avancé (Excel, Project)",
+            "SAP",
+            "Manhattan WMS",
+            "MS Office (Excel, Project)",
         ],
     },
 ]
@@ -251,10 +230,9 @@ SKILLS = [
 # ══════════════════════════════════════════════════════════════
 
 LANGUAGES = [
-    {"lang": "Français",          "level": bi("Langue maternelle", "Native")},
-    {"lang": "Anglais / English", "level": bi("C2 — TOEFL ITP 624, Cambridge Certificate",
-                                              "C2 — TOEFL ITP 624, Cambridge Certificate")},
-    {"lang": "Español / Espagnol","level": bi("B1/B2", "B1/B2")},
+    {"lang": "Français",           "level": bi("Langue maternelle", "Native")},
+    {"lang": "Anglais / English",  "level": bi("C2 — TOEFL ITP 624", "C2 — TOEFL ITP 624")},
+    {"lang": "Español / Espagnol", "level": bi("B1/B2", "B1/B2")},
 ]
 
 # ══════════════════════════════════════════════════════════════
@@ -268,8 +246,8 @@ ASSOCIATIONS = [
         "org"        : "Grenoble INP",
         "period"     : "2020 – 2021",
         "description": bi(
-            "Management de 27 personnes sur 1,5 an — budget géré : 25K€.",
-            "Management of 27 people over 18 months — budget managed: €25K.",
+            "Management de 27 personnes sur 1,5 an — budget : 25K€.",
+            "Management of 27 people over 18 months — budget: €25K.",
         ),
     },
 ]

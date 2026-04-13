@@ -107,24 +107,22 @@ def build_summary(summary: Any, lang: str) -> str:
     )
 
 def build_experience(experience: list, lang: str) -> str:
+    """Format : L'Oréal | Titre · date — sans localisation ni statut."""
     if not _is_on("experience"):
         return ""
 
     cards = []
     for job in experience:
-        date_str    = f"{t(job['start'], lang)} – {t(job['end'], lang)}"
-        company_str = job["company"]
-        if job.get("type"):
-            company_str += f" · {t(job['type'], lang)}"
-        if job.get("location"):
-            company_str += f" · {t(job['location'], lang)}"
+        date_str   = f"{t(job['start'], lang)} – {t(job['end'], lang)}"
+        company    = job.get("company", "")
+        title      = t(job["title"], lang)
+        full_title = f"{company}&nbsp;&nbsp;|&nbsp;&nbsp;{title}" if company else title
 
         cards.append(
             f'  <div class="entry-card entry">\n'
             f'    <div class="entry-header">\n'
             f'      <div class="entry-left">\n'
-            f'        <div class="entry-title">{t(job["title"], lang)}</div>\n'
-            f'        <div class="entry-sub">{company_str}</div>\n'
+            f'        <div class="entry-title">{full_title}</div>\n'
             f'      </div>\n'
             f'      <div class="entry-date">{date_str}</div>\n'
             f'    </div>\n'
@@ -140,6 +138,35 @@ def build_experience(experience: list, lang: str) -> str:
     )
 
 def build_education(education: list, lang: str) -> str:
+    """Format : École en titre principal, diplôme en sous-titre — sans localisation."""
+    if not _is_on("education"):
+        return ""
+
+    cards = []
+    for edu in education:
+        date_str = f"{edu['start']} – {edu['end']}"
+        school   = edu["school"]
+        degree   = t(edu["degree"], lang)
+
+        cards.append(
+            f'  <div class="entry-card entry">\n'
+            f'    <div class="entry-header">\n'
+            f'      <div class="entry-left">\n'
+            f'        <div class="entry-title">{school}</div>\n'
+            f'        <div class="entry-sub">{degree}</div>\n'
+            f'      </div>\n'
+            f'      <div class="entry-date">{date_str}</div>\n'
+            f'    </div>\n'
+            f'{_bullets(edu.get("bullets", []), lang)}'
+            f'  </div>\n'
+        )
+
+    return (
+        f'<section>\n'
+        f'  <div class="section-title">{_label("education", lang)}</div>\n'
+        + "".join(cards)
+        + f'</section>\n'
+    )
     if not _is_on("education"):
         return ""
 
@@ -198,29 +225,17 @@ def build_skills(skills: list, lang: str) -> str:
     )
 
 def build_languages(languages: list, lang: str) -> str:
+    """Sans badges de niveau — texte simple."""
     if not _is_on("languages"):
         return ""
 
-    # Mapping niveau → nombre de points
-    level_dots = {"native": 5, "c2": 5, "c1": 4, "b2": 3, "b1": 3, "a2": 2, "a1": 1}
-
-    rows = []
-    for item in languages:
-        level_text = t(item["level"], lang)
-        # Détecte le niveau pour les points (cherche c2, b1, etc. dans le texte)
-        dots_count = next(
-            (v for k, v in level_dots.items() if k in level_text.lower()),
-            None,
-        )
-        dots_html  = _lang_dots(dots_count) if dots_count is not None else ""
-
-        rows.append(
-            f'  <div class="lang-item">\n'
-            f'    <div class="lang-name">{item["lang"]}</div>\n'
-            f'    {dots_html}\n'
-            f'    <div class="lang-level">{level_text}</div>\n'
-            f'  </div>\n'
-        )
+    rows = [
+        f'  <div class="lang-item">\n'
+        f'    <div class="lang-name">{item["lang"]}</div>\n'
+        f'    <div class="lang-level">{t(item["level"], lang)}</div>\n'
+        f'  </div>\n'
+        for item in languages
+    ]
 
     return (
         f'<section>\n'
