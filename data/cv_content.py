@@ -1,47 +1,17 @@
 """
 🖊  Contenu du CV — Bilingue FR / EN
+    Adapté pour : Website Factory Tech Project Manager @ L'Oréal
 """
 
 # ── Helpers ───────────────────────────────────────────────────
-
 def bi(fr: str, en: str) -> dict:
-    """Champ bilingue."""
     return {"fr": fr, "en": en}
 
 def kpi(text: str) -> str:
-    """Badge visuel pour un KPI / chiffre clé dans une bullet.
-    Ex : kpi('+200 utilisateurs')  →  badge ambre mis en valeur.
-    """
     return f'<span class="kpi-badge">{text}</span>'
 
 def bold(text: str) -> str:
-    """Met un mot-clé en gras dans une bullet."""
     return f'<strong>{text}</strong>'
-
-# ── Usage dans les bullets ────────────────────────────────────
-# bi(
-#     f"Pilotage de produits analytiques — {kpi('+200 utilisateurs actifs')}.",
-#     f"Global analytics products — {kpi('200+ active users')}.",
-# ),
-# bi(
-#     f"Réduction {kpi('−20%')} des écarts de stock via {bold('tableaux de bord')}.",
-#     f"{kpi('−20%')} stock discrepancy reduction through {bold('monitoring dashboards')}.",
-# ),
-
-"""
-🖊  Contenu du CV — Bilingue FR / EN
-======================================
-SEUL FICHIER À MODIFIER pour mettre à jour votre CV.
-
-Convention :
-  ┌─ Champ bilingue  → bi("Texte français", "English text")
-  └─ Champ identique → "L'Oréal"  (chaîne simple, ex : entreprise, dates, outils)
-"""
-
-# ── Helper bilingue ───────────────────────────────────────────
-def bi(fr: str, en: str) -> dict:
-    """Crée un champ bilingue FR / EN."""
-    return {"fr": fr, "en": en}
 
 # ══════════════════════════════════════════════════════════════
 #  INFORMATIONS PERSONNELLES
@@ -50,36 +20,39 @@ def bi(fr: str, en: str) -> dict:
 PERSONAL = {
     "name"    : "Nils Levillain",
     "title"   : bi(
-        "Data & Supply Chain | Product Owner Analytics @ L'Oréal",
-        "Data & Supply Chain | Product Owner Analytics @ L'Oréal",
+        "Tech Project Manager | Product Owner Analytics @ L'Oréal",
+        "Tech Project Manager | Product Owner Analytics @ L'Oréal",
     ),
     "email"   : "levillain.nils@gmail.com",
     "phone"   : "+33 06 69 56 69 37",
-    "location": "Paris, 75015, France",
+    "location": "Paris, 75010, France",
     "linkedin": "linkedin.com/in/nils-levillain",
+    "github"  : "github.com/nils-levillain",       # ← adapter si username différent
 }
 
 # ══════════════════════════════════════════════════════════════
-#  RÉSUMÉ / PROFIL
+#  RÉSUMÉ
 # ══════════════════════════════════════════════════════════════
 
 SUMMARY = bi(
     fr=(
-        "Ingénieur Supply Chain avec 3+ ans chez L'Oréal, spécialisé en Data Products "
-        "et optimisation logistique. Expertise end-to-end : discovery utilisateur, "
-        "data engineering (BigQuery, SQL), déploiement Power BI & Web Apps, avec un "
-        "impact direct sur la durabilité (CO2) et la performance financière."
+        "Tech Project Manager & Technical Product Owner avec 3+ ans chez L'Oréal. "
+        "Expert en pilotage de projets tech end-to-end dans un environnement agile "
+        "et international, je fais le pont entre équipes techniques et métier à l'échelle "
+        "de plusieurs zones géographiques. Expertise : cloud (GCP), IA/ML, conduite du "
+        "changement, gestion de partenaires technologiques et communication multi-niveaux."
     ),
     en=(
-        "Supply Chain Engineer with 3+ years at L'Oréal, specialising in Data Products "
-        "and logistics optimisation. End-to-end expertise: user discovery, data engineering "
-        "(BigQuery, SQL), Power BI & Web App deployment, with direct impact on "
-        "sustainability (CO2) and financial performance."
+        "Tech Project Manager & Technical Product Owner with 3+ years at L'Oréal. "
+        "Expert in end-to-end tech project delivery in agile, global environments, "
+        "bridging the gap between technical teams and business stakeholders across "
+        "multiple zones. Expertise: cloud (GCP), AI/ML, change management, technology "
+        "partner coordination, and multi-level communication."
     ),
 )
 
 # ══════════════════════════════════════════════════════════════
-#  EXPÉRIENCES PROFESSIONNELLES
+#  EXPÉRIENCES  (L'Oréal uniquement)
 # ══════════════════════════════════════════════════════════════
 
 EXPERIENCE = [
@@ -91,46 +64,50 @@ EXPERIENCE = [
         "company" : "L'Oréal",
         "type"    : bi("CDI", "Permanent"),
         "location": bi("Clichy, Île-de-France", "Clichy, France"),
-        "start"   : bi("Janvier 2024",   "January 2024"),
-        "end"     : bi("Aujourd'hui",     "Present"),
+        "start"   : bi("Janvier 2024",  "January 2024"),
+        "end"     : bi("Aujourd'hui",   "Present"),
         "bullets" : [
             bi(
-                "Pilotage du développement de produits analytiques mondiaux pour le métier "
-                "Fulfillment (Transport, Douane, Entrepôt), toutes Zones et Divisions — "
-                "+200 utilisateurs actifs.",
-                "Driving the development of global analytics products for the Fulfillment "
-                "function (Transport, Customs, Warehouse) across all L'Oréal Zones and "
-                "Divisions — 200+ active users.",
+                f"Tech Project Manager agile : pilotage end-to-end de produits analytiques "
+                f"mondiaux pour toutes les Zones et Divisions L'Oréal — {kpi('+200 utilisateurs '
+                f'actifs')} ; définition et exécution de la {bold('roadmap technique')}.",
+                f"Agile Tech Project Manager: end-to-end delivery of global analytics products "
+                f"across all L'Oréal Zones and Divisions — {kpi('200+ active users')}; "
+                f"defined and executed the {bold('technical roadmap')}.",
             ),
             bi(
-                "Durabilité & RSE : calculateur CO2 Transport ; outil No Waste "
-                "(optimisation fin de vie des stocks via ML forecasting, "
-                "Programmation Linéaire, Web App Full-Stack).",
-                "Sustainability & CSR: CO2 Transport calculator; No Waste tool "
-                "(end-of-life stock optimisation via ML forecasting, Linear "
-                "Programming, Full-Stack Web App).",
+                f"Pont technique / métier : traduction des besoins métier en spécifications "
+                f"techniques ; coordination de multiples {bold('parties prenantes')} dans un "
+                f"environnement international et matriciel (IT Zones, Divisions, Architectes).",
+                f"Bridge between tech and business: translated business needs into technical "
+                f"specifications; coordinated multiple {bold('stakeholders')} in a global, "
+                f"matrixed organisation (IT Zones, Divisions, Architects).",
             ),
             bi(
-                "Performance Financière : suivi efficacité transport, Cockpit Entrepôt 360°, "
-                "monitoring Douanes & Compliance, détection Anti-Diversion & Traçabilité.",
-                "Financial Performance: transport efficiency tracking, Warehouse 360° "
-                "Cockpit, Customs & Compliance monitoring, Anti-Diversion detection.",
+                f"Innovation & IA : {bold('Proof-of-Concepts')} en IA/ML (forecasting, "
+                f"Programmation Linéaire, Web App Full-Stack) — de l'idéation au déploiement "
+                f"global ; calculateur CO2 Transport.",
+                f"Innovation & AI: {bold('Proof-of-Concepts')} in AI/ML (forecasting, "
+                f"Linear Programming, Full-Stack Web App) — from ideation to global "
+                f"deployment; CO2 Transport calculator.",
             ),
             bi(
-                "Discovery & Design : +30 entretiens utilisateurs, UX/UI Design sur mesure.",
-                "Discovery & Design: 30+ user interviews, tailored UX/UI Design.",
+                f"Cloud & Data Engineering : {bold('GCP (BigQuery)')}, Architecture Médaillon, "
+                f"SQL complexe, suivi qualité des données en production.",
+                f"Cloud & Data Engineering: {bold('GCP (BigQuery)')}, Medallion Architecture, "
+                f"complex SQL, data quality monitoring in production.",
             ),
             bi(
-                "Data Engineering : BigQuery (Architecture Médaillon, Schéma en étoile), "
-                "transformations SQL complexes, suivi qualité des données sur GCP.",
-                "Data Engineering: BigQuery modelling (Medallion Architecture, Star Schema), "
-                "complex SQL transformations, data quality monitoring on GCP.",
+                f"Déploiement & {bold('conduite du changement')} : Power BI (DAX), Web Apps, "
+                f"tracking adoption & NPS ; coordination de partenaires technologiques.",
+                f"Deployment & {bold('change management')}: Power BI (DAX), Web Apps, "
+                f"adoption & NPS tracking; technology partner coordination.",
             ),
             bi(
-                "Stack : SQL (BigQuery), Python (ML/Optimisation), Power BI (DAX), "
-                "GitHub (CI/CD).",
-                "Stack: SQL (BigQuery), Python (ML/Optimisation), Power BI (DAX), "
-                "GitHub (CI/CD).",
+                f"Reporting & impact : définition de KPIs, pilotage budgétaire, "
+                f"restitution aux équipes tech et métier.",
+                f"Reporting & impact: KPI definition, budget monitoring, "
+                f"presentation to both technical and business audiences.",
             ),
         ],
     },
@@ -146,27 +123,30 @@ EXPERIENCE = [
         "end"     : bi("Décembre 2023",  "December 2023"),
         "bullets" : [
             bi(
-                "Projet de remplacement du WMS en centrale de distribution "
-                "(SAP → Manhattan).",
-                "WMS replacement project in the distribution centre (SAP → Manhattan).",
+                f"Chef de projet tech : remplacement du WMS en centrale de distribution "
+                f"({bold('SAP → Manhattan')}), coordinant équipes IT, opérations et "
+                f"{bold('partenaires externes')} dans un environnement multi-sites.",
+                f"Tech project delivery: WMS replacement in distribution centre "
+                f"({bold('SAP → Manhattan')}), coordinating IT teams, operations, "
+                f"and {bold('external partners')} across multiple sites.",
             ),
             bi(
-                "Développement BI : +20 rapports impactants, animation de la communauté "
-                "de développeurs au niveau Europe, migration de données entre systèmes.",
-                "BI Development: 20+ impactful reports, European developer community lead, "
-                "data migration between systems.",
+                f"Développement BI & reporting : {kpi('+20 rapports')} impactants, animation "
+                f"de la communauté de développeurs Europe, migration de données inter-systèmes.",
+                f"BI development & reporting: {kpi('20+')} impactful reports, European "
+                f"developer community leadership, inter-system data migration.",
             ),
             bi(
-                "Configuration & tests du nouveau WMS : définition et exécution de +100 "
-                "cas de test, suivi de KPIs d'avancement.",
-                "WMS configuration & testing: definition and execution of 100+ test cases, "
-                "progress KPI tracking.",
+                f"Tests & qualité : définition et exécution de {kpi('+100 cas de test')}, "
+                f"suivi des KPIs d'avancement.",
+                f"Testing & quality: definition and execution of {kpi('100+')} test cases, "
+                f"progress KPI tracking.",
             ),
             bi(
-                "Conduite du changement : documentation, formation opérateurs et chefs "
-                "d'équipe (~50h), accompagnement au déploiement.",
-                "Change management: documentation, training of operators and team "
-                "leaders (~50h), deployment support.",
+                f"{bold('Conduite du changement')} : documentation, {kpi('~50h')} de formation "
+                f"opérateurs et chefs d'équipe, accompagnement déploiement et optimisation continue.",
+                f"{bold('Change management')}: documentation, {kpi('~50h')} training for "
+                f"operators and team leaders, deployment support and continuous optimisation.",
             ),
         ],
     },
@@ -179,58 +159,16 @@ EXPERIENCE = [
         "end"     : bi("Juillet 2022", "July 2022"),
         "bullets" : [
             bi(
-                "Planification, approvisionnement et logistique du catalogue promotionnel "
-                "Ultradoux de Garnier — taux de service de 99%.",
-                "Planning, procurement and logistics for Garnier's Ultradoux promotional "
-                "catalogue — 99% service rate.",
+                f"Planification, approvisionnement et logistique du catalogue promotionnel "
+                f"Garnier — {kpi('taux de service 99%')}.",
+                f"Planning, procurement and logistics for Garnier's promotional "
+                f"catalogue — {kpi('99% service rate')}.",
             ),
             bi(
-                "Analyse et réduction de 20% des écarts de stock avec le principal "
-                "copacker (CA & production) via tableaux de bord de suivi.",
-                "20% reduction of stock discrepancies with the main co-packer "
-                "(turnover & production) through monitoring dashboards.",
-            ),
-            "SAP/APO · Power BI (PowerPivot, M, DAX) · Excel (M, DAX, VBA)",
-        ],
-    },
-    {
-        "title"   : bi("Supply Chain Analyst", "Supply Chain Analyst"),
-        "company" : "Plastic Omnium",
-        "type"    : bi("Stage", "Internship"),
-        "location": bi("Sainte-Julie, Auvergne-Rhône-Alpes", "Sainte-Julie, France"),
-        "start"   : bi("Juin 2021",  "June 2021"),
-        "end"     : bi("Août 2021", "August 2021"),
-        "bullets" : [
-            bi(
-                "Développement d'un outil de calcul de taille de lot optimale : "
-                "recueil du besoin, base de données & GUI, data visualization.",
-                "Development of an optimal batch size calculation tool: "
-                "requirements gathering, database & GUI, data visualisation.",
-            ),
-            bi(
-                "Déployé en usine — gains potentiels de 175K€.",
-                "Deployed in production plants — potential savings of €175K.",
-            ),
-        ],
-    },
-    {
-        "title"   : bi(
-            "Consultant Optimisation de Processus",
-            "Process Optimisation Consultant",
-        ),
-        "company" : "STMicroelectronics",
-        "type"    : bi("Partenariat universitaire", "University partnership"),
-        "location": "Grenoble, France",
-        "start"   : bi("Février 2021", "February 2021"),
-        "end"     : bi("Mai 2021",     "May 2021"),
-        "bullets" : [
-            bi(
-                "Optimisation du processus d'accueil et de départ des collaborateurs.",
-                "Optimisation of the employee onboarding and offboarding process.",
-            ),
-            bi(
-                "Formalisation des processus, PDCA, kits de communication.",
-                "Process formalisation, PDCA methodology, communication kits.",
+                f"Réduction {kpi('−20%')} des écarts de stock avec le principal copacker "
+                f"via tableaux de bord de suivi.",
+                f"{kpi('−20%')} stock discrepancy reduction with main co-packer "
+                f"through monitoring dashboards.",
             ),
         ],
     },
@@ -256,12 +194,8 @@ EDUCATION = [
                 "Industrial organisation, ERP (SAP), Industry 4.0, Lean manufacturing.",
             ),
             bi(
-                "Data science, recherche opérationnelle, informatique.",
-                "Data science, operations research, computer science.",
-            ),
-            bi(
-                "Gestion de projet, sociologie, économie.",
-                "Project management, sociology, economics.",
+                "Data science, recherche opérationnelle, gestion de projet.",
+                "Data science, operations research, project management.",
             ),
         ],
     },
@@ -276,61 +210,38 @@ EDUCATION = [
         "end"     : "2022",
         "bullets" : [
             bi(
-                "Systèmes de gestion d'entreprise (SAP), performance et prix de revient.",
-                "Enterprise resource planning (SAP), performance and cost analysis.",
+                "Systèmes de gestion d'entreprise (SAP), data mining, machine learning.",
+                "Enterprise resource planning (SAP), data mining, machine learning.",
             ),
-            bi("Data mining, machine learning.", "Data mining, machine learning."),
         ],
-    },
-    {
-        "degree"  : "Classe Préparatoire PCSI / PC*",
-        "school"  : "Lycée Champollion",
-        "location": "Grenoble, France",
-        "start"   : "2017",
-        "end"     : "2019",
-        "bullets" : [],
     },
 ]
 
 # ══════════════════════════════════════════════════════════════
-#  COMPÉTENCES
+#  COMPÉTENCES  (alignées job offer WSF)
 # ══════════════════════════════════════════════════════════════
 
 SKILLS = [
     {
-        "category": bi("Data & BI", "Data & BI"),
+        "category": bi("Gestion de Projet Tech", "Tech Project Management"),
         "items"   : [
-            "SQL (BigQuery)",
-            "Python (Pandas, PySpark, Scikit-learn, TensorFlow)",
-            "R (tidyr, dplyr, ggplot2)",
-            "Power BI (DAX, M)",
-            "IBM Cognos Analytics",
+            "Agile / Scrum", "Roadmap", "PI Planning",
+            "Stakeholder Management", "Change Management",
+            "Product Management", "UX/UI Design",
         ],
     },
     {
-        "category": bi("ERP & Supply Chain", "ERP & Supply Chain"),
+        "category": bi("Cloud & Data", "Cloud & Data"),
         "items"   : [
-            "SAP (FI, CO, MM, PP, SD, APO)",
-            "Manhattan WMS",
-            "VSM · Kaizen · Lean Manufacturing",
-            "Arena",
+            "GCP (BigQuery)", "SQL", "Python (ML/Optimisation)",
+            "Power BI (DAX, M)", "GitHub (CI/CD)",
         ],
     },
     {
-        "category": bi("Dev & Outils", "Dev & Tools"),
+        "category": bi("Plateformes & Outils", "Platforms & Tools"),
         "items"   : [
-            "Git / GitHub (CI/CD)",
-            "Java · OPL · UML",
-            "MS Office avancé (Excel, Access, Project)",
-            "VBA",
-        ],
-    },
-    {
-        "category": bi("Produit & Méthodes", "Product & Methods"),
-        "items"   : [
-            "Product Management",
-            "Agile / Scrum",
-            "UX/UI Design",
+            "SAP (FI, CO, MM, SD, APO)", "Manhattan WMS",
+            "MS Office avancé (Excel, Project)",
         ],
     },
 ]
@@ -340,72 +251,38 @@ SKILLS = [
 # ══════════════════════════════════════════════════════════════
 
 LANGUAGES = [
-    {
-        "lang" : "Français",
-        "level": bi("Langue maternelle", "Native"),
-    },
-    {
-        "lang" : "Anglais / English",
-        "level": bi(
-            "C2 — TOEFL ITP 624, Cambridge Certificate",
-            "C2 — TOEFL ITP 624, Cambridge Certificate",
-        ),
-    },
-    {
-        "lang" : "Español / Espagnol",
-        "level": bi("B1/B2", "B1/B2"),
-    },
+    {"lang": "Français",          "level": bi("Langue maternelle", "Native")},
+    {"lang": "Anglais / English", "level": bi("C2 — TOEFL ITP 624, Cambridge Certificate",
+                                              "C2 — TOEFL ITP 624, Cambridge Certificate")},
+    {"lang": "Español / Espagnol","level": bi("B1/B2", "B1/B2")},
 ]
 
 # ══════════════════════════════════════════════════════════════
-#  VIE ASSOCIATIVE & LEADERSHIP
+#  VIE ASSOCIATIVE
 # ══════════════════════════════════════════════════════════════
 
 ASSOCIATIONS = [
     {
-        "role"       : bi(
-            "Président du Bureau des Sports",
-            "President of the Sports Committee",
-        ),
+        "role"       : bi("Président du Bureau des Sports",
+                          "President of the Sports Committee"),
         "org"        : "Grenoble INP",
         "period"     : "2020 – 2021",
         "description": bi(
-            "Management de 27 personnes pour animer la vie étudiante "
-            "sur 1,5 an — budget géré : 25K€.",
-            "Management of 27 people to drive student life over 18 months "
-            "— budget managed: €25K.",
-        ),
-    },
-    {
-        "role"       : bi("Chef de projet – Collecte de fonds", "Project Lead – Fundraising"),
-        "org"        : bi("Association scolaire", "School Association"),
-        "period"     : "2018 – 2019",
-        "description": bi(
-            "Organisation de collectes de fonds pour deux voyages scolaires.",
-            "Organisation of fundraising campaigns for two school trips.",
+            "Management de 27 personnes sur 1,5 an — budget géré : 25K€.",
+            "Management of 27 people over 18 months — budget managed: €25K.",
         ),
     },
 ]
 
 # ══════════════════════════════════════════════════════════════
-#  CENTRES D'INTÉRÊT
+#  INTÉRÊTS
 # ══════════════════════════════════════════════════════════════
 
 INTERESTS = [
-    bi(
-        "Musique & Art (guitariste et bassiste autodidacte)",
-        "Music & Art (self-taught guitarist and bassist)",
-    ),
-    bi(
-        "Ski (10 ans de compétition en club)",
-        "Skiing (10 years of club competition)",
-    ),
-    bi(
-        "Volleyball (compétitions interuniversitaires)",
-        "Volleyball (interuniversity competitions)",
-    ),
-    bi(
-        "Force athlétique (niveau régional)",
-        "Powerlifting (regional level)",
-    ),
+    bi("Musique & Art (guitariste et bassiste autodidacte)",
+       "Music & Art (self-taught guitarist and bassist)"),
+    bi("Ski (10 ans de compétition en club)",
+       "Skiing (10 years of club competition)"),
+    bi("Force athlétique (niveau régional)",
+       "Powerlifting (regional level)"),
 ]

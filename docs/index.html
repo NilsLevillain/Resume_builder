@@ -13,8 +13,8 @@
 })();
 
 function toggleTheme() {
-    const html  = document.documentElement;
-    const next  = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('cv-theme', next);
     const btn = document.querySelector('.theme-toggle');
@@ -32,6 +32,68 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.title       = theme === 'dark' ? 'Light mode' : 'Dark mode';
     }
 });
+
+function initParticles() {
+    if (document.getElementById('cv-particles')) return;
+
+    const canvas  = document.createElement('canvas');
+    canvas.id     = 'cv-particles';
+    canvas.style.cssText = [
+        'position:fixed', 'top:0', 'left:0',
+        'width:100%', 'height:100%',
+        'z-index:-1', 'pointer-events:none',
+    ].join(';');
+    document.body.prepend(canvas);
+
+    const ctx       = canvas.getContext('2d');
+    const COUNT     = 55;
+    const particles = [];
+
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function make() {
+        return {
+            x  : Math.random() * canvas.width,
+            y  : Math.random() * canvas.height,
+            r  : Math.random() * 1.8 + 0.4,
+            dx : (Math.random() - 0.5) * 0.22,
+            dy : (Math.random() - 0.5) * 0.22,
+            a  : Math.random() * 0.18 + 0.04,
+        };
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < COUNT; i++) particles.push(make());
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const rgb  = dark ? '147,197,253' : '37,99,235';
+
+        particles.forEach(p => {
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < -4) p.x = canvas.width  + 4;
+            if (p.x > canvas.width  + 4) p.x = -4;
+            if (p.y < -4) p.y = canvas.height + 4;
+            if (p.y > canvas.height + 4) p.y = -4;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb},${p.a})`;
+            ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+document.addEventListener('DOMContentLoaded', initParticles);
 </script>
   <style>
 
@@ -41,21 +103,17 @@ document.addEventListener('DOMContentLoaded', function () {
 ══════════════════════════════════════════════════════ */
 
 :root {
-    /* ── Accent ── */
     --accent          : #2563eb;
     --accent-light    : #eff6ff;
 
-    /* ── Page ── */
-    --page-bg         : #eef2f7;
+    --page-bg         : #ffffff;
     --shadow-page     : 0 4px 40px rgba(0,0,0,0.10);
 
-    /* ── Header ── */
     --header-bg       : #ffffff;
     --name-color      : #1e3a5f;
     --tagline-color   : #475569;
     --contact-color   : #64748b;
 
-    /* ── Sidebar ── */
     --sidebar-bg      : #1e3a5f;
     --sidebar-text    : #e2e8f0;
     --sidebar-muted   : #94a3b8;
@@ -64,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
     --sidebar-tag-bg  : rgba(255,255,255,0.10);
     --sidebar-tag-bd  : rgba(255,255,255,0.20);
 
-    /* ── Main area ── */
     --main-bg         : #ffffff;
     --card-bg         : #f8fafc;
     --card-border     : #e2e8f0;
@@ -73,17 +130,14 @@ document.addEventListener('DOMContentLoaded', function () {
     --text-muted      : #64748b;
     --section-border  : #2563eb;
 
-    /* ── Tags (main) ── */
     --tag-bg          : #eff6ff;
     --tag-text        : #1d4ed8;
     --tag-border      : #bfdbfe;
 
-    /* ── KPI badges ── */
     --kpi-bg          : #fffbeb;
     --kpi-text        : #b45309;
     --kpi-border      : #fde68a;
 
-    /* ── Misc ── */
     --radius-card     : 8px;
     --radius-tag      : 100px;
     --font            : Arial, Helvetica, sans-serif;
@@ -143,23 +197,33 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════
+   CANVAS PARTICULES
+══════════════════════════════════════════════════════ */
+
+#cv-particles { display: block; }
+
+@media print {
+    #cv-particles { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════
    THEME TOGGLE BUTTON
 ══════════════════════════════════════════════════════ */
 
 .theme-toggle {
-    position    : absolute;
-    top         : 16px;
-    right       : 20px;
-    background  : var(--card-bg);
-    border      : 1px solid var(--card-border);
+    position     : absolute;
+    top          : 16px;
+    right        : 20px;
+    background   : var(--card-bg);
+    border       : 1px solid var(--card-border);
     border-radius: var(--radius-tag);
-    padding     : 4px 12px;
-    font-size   : 14px;
-    cursor      : pointer;
-    box-shadow  : var(--card-shadow);
-    transition  : all 0.2s;
-    z-index     : 10;
-    line-height : 1.4;
+    padding      : 4px 12px;
+    font-size    : 14px;
+    cursor       : pointer;
+    box-shadow   : var(--card-shadow);
+    transition   : all 0.2s;
+    z-index      : 10;
+    line-height  : 1.4;
 }
 .theme-toggle:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
 
@@ -168,11 +232,13 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .cv-page {
-    max-width     : 920px;
-    margin        : 24px auto;
-    border-radius : 12px;
-    overflow      : hidden;
-    box-shadow    : var(--shadow-page);
+    max-width    : 920px;
+    margin       : 24px auto;
+    border-radius: 12px;
+    overflow     : hidden;
+    box-shadow   : var(--shadow-page);
+    position     : relative;
+    z-index      : 1;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -180,47 +246,57 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .cv-header {
-    background  : var(--header-bg);
-    padding     : 28px 36px 24px;
-    position    : relative;
+    background   : var(--header-bg);
+    padding      : 28px 36px 24px;
+    position     : relative;
     border-bottom: 3px solid var(--accent);
-    transition  : background 0.2s;
+    transition   : background 0.2s;
 }
 
 .cv-name {
-    font-size      : 26pt;
-    font-weight    : bold;
-    letter-spacing : 3px;
-    text-transform : uppercase;
-    color          : var(--name-color);
-    line-height    : 1.1;
-    margin-bottom  : 6px;
+    font-size     : 26pt;
+    font-weight   : bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color         : var(--name-color);
+    line-height   : 1.1;
+    margin-bottom : 6px;
 }
 
 .cv-tagline {
-    font-size   : 11pt;
-    color       : var(--accent);
-    font-weight : 600;
+    font-size    : 11pt;
+    color        : var(--accent);
+    font-weight  : 600;
     margin-bottom: 10px;
 }
 
 .cv-contact {
-    font-size   : 9.5pt;
-    color       : var(--contact-color);
-    display     : flex;
-    flex-wrap   : wrap;
-    gap         : 4px 20px;
+    font-size : 9.5pt;
+    color     : var(--contact-color);
+    display   : flex;
+    flex-wrap : wrap;
+    gap       : 4px 20px;
 }
 
 .cv-contact-item {
-    display     : flex;
-    align-items : center;
-    gap         : 4px;
+    display    : flex;
+    align-items: center;
+    gap        : 4px;
 }
 
 .cv-contact-icon {
-    font-size   : 10pt;
-    opacity     : 0.7;
+    font-size: 10pt;
+    opacity  : 0.7;
+}
+
+.cv-contact-link {
+    color          : inherit;
+    text-decoration: none;
+    transition     : color 0.15s;
+}
+.cv-contact-link:hover {
+    color          : var(--accent);
+    text-decoration: underline;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -228,29 +304,27 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .cv-body {
-    display         : flex;
-    min-height      : 700px;
-    align-items     : stretch;
+    display    : flex;
+    min-height : 700px;
+    align-items: stretch;
 }
 
-/* ── Sidebar ── */
 .cv-sidebar {
-    width       : 265px;
-    flex-shrink : 0;
-    background  : var(--sidebar-bg);
-    color       : var(--sidebar-text);
-    padding     : 24px 20px 32px;
-    order       : -1;           /* visuellement à gauche */
-    transition  : background 0.2s;
+    width      : 265px;
+    flex-shrink: 0;
+    background : var(--sidebar-bg);
+    color      : var(--sidebar-text);
+    padding    : 24px 20px 32px;
+    order      : -1;
+    transition : background 0.2s;
 }
 
-/* ── Main ── */
 .cv-main {
-    flex        : 1;
-    background  : var(--main-bg);
-    padding     : 24px 28px 32px;
-    order       : 1;            /* visuellement à droite */
-    transition  : background 0.2s;
+    flex      : 1;
+    background: var(--main-bg);
+    padding   : 24px 28px 32px;
+    order     : 1;
+    transition: background 0.2s;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -258,26 +332,24 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .section-title {
-    font-size      : 8.5pt;
-    font-weight    : bold;
-    text-transform : uppercase;
-    letter-spacing : 2px;
-    margin-top     : 22px;
-    margin-bottom  : 12px;
-    padding-bottom : 6px;
+    font-size     : 8.5pt;
+    font-weight   : bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top    : 22px;
+    margin-bottom : 12px;
+    padding-bottom: 6px;
 }
 
-/* Main : accent + bordure */
 .cv-main .section-title {
-    color        : var(--accent);
+    color       : var(--accent);
     border-bottom: 1.5px solid var(--section-border);
 }
 
-/* Sidebar : couleur claire sur fond foncé */
 .cv-sidebar .section-title {
-    color        : var(--sidebar-h2);
+    color       : var(--sidebar-h2);
     border-bottom: 1px solid var(--sidebar-border);
-    margin-top   : 24px;
+    margin-top  : 24px;
 }
 
 .cv-sidebar .section-title:first-child { margin-top: 0; }
@@ -287,64 +359,63 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .entry-card {
-    background    : var(--card-bg);
-    border        : 1px solid var(--card-border);
-    border-left   : 3px solid var(--accent);
-    border-radius : var(--radius-card);
-    padding       : 12px 14px;
-    margin-bottom : 10px;
-    box-shadow    : var(--card-shadow);
-    transition    : background 0.2s, box-shadow 0.2s;
+    background   : var(--card-bg);
+    border       : 1px solid var(--card-border);
+    border-left  : 3px solid var(--accent);
+    border-radius: var(--radius-card);
+    padding      : 12px 14px;
+    margin-bottom: 10px;
+    box-shadow   : var(--card-shadow);
+    transition   : background 0.2s, box-shadow 0.2s;
 }
 
 .entry-header {
-    display         : flex;
-    justify-content : space-between;
-    align-items     : flex-start;
-    gap             : 10px;
-    margin-bottom   : 4px;
+    display        : flex;
+    justify-content: space-between;
+    align-items    : flex-start;
+    gap            : 10px;
+    margin-bottom  : 4px;
 }
 
-.entry-left  { flex: 1; min-width: 0; }
+.entry-left { flex: 1; min-width: 0; }
 
 .entry-title {
-    font-weight : bold;
-    font-size   : 10.5pt;
-    color       : var(--text);
-    line-height : 1.3;
+    font-weight: bold;
+    font-size  : 10.5pt;
+    color      : var(--text);
+    line-height: 1.3;
 }
 
 .entry-sub {
-    font-size  : 9.5pt;
-    color      : var(--text-muted);
-    font-style : italic;
-    margin-top : 2px;
+    font-size : 9.5pt;
+    color     : var(--text-muted);
+    font-style: italic;
+    margin-top: 2px;
 }
 
 .entry-date {
-    font-size   : 9pt;
-    color       : var(--text-muted);
-    white-space : nowrap;
-    text-align  : right;
-    flex-shrink : 0;
-    padding-top : 1px;
-    background  : var(--accent-light);
+    font-size    : 9pt;
+    color        : var(--text-muted);
+    white-space  : nowrap;
+    text-align   : right;
+    flex-shrink  : 0;
+    background   : var(--accent-light);
     border-radius: var(--radius-tag);
-    padding     : 2px 8px;
-    height      : fit-content;
-    font-weight : 500;
+    padding      : 2px 8px;
+    height       : fit-content;
+    font-weight  : 500;
 }
 
 .entry ul {
-    margin-left : 16px;
-    margin-top  : 7px;
+    margin-left: 16px;
+    margin-top : 7px;
 }
 
 .entry ul li {
-    font-size     : 10pt;
-    margin-bottom : 3px;
-    line-height   : 1.45;
-    color         : var(--text);
+    font-size    : 10pt;
+    margin-bottom: 3px;
+    line-height  : 1.45;
+    color        : var(--text);
 }
 
 /* ══════════════════════════════════════════════════════
@@ -365,34 +436,32 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════
-   TAGS (sidebar + main)
+   TAGS
 ══════════════════════════════════════════════════════ */
 
-/* Tags sidebar */
 .cv-sidebar .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 .cv-sidebar .tag {
-    display       : inline-block;
-    background    : var(--sidebar-tag-bg);
-    color         : var(--sidebar-text);
-    border        : 1px solid var(--sidebar-tag-bd);
-    border-radius : var(--radius-tag);
-    padding       : 2px 10px;
-    font-size     : 8.5pt;
-    line-height   : 1.5;
+    display      : inline-block;
+    background   : var(--sidebar-tag-bg);
+    color        : var(--sidebar-text);
+    border       : 1px solid var(--sidebar-tag-bd);
+    border-radius: var(--radius-tag);
+    padding      : 2px 10px;
+    font-size    : 8.5pt;
+    line-height  : 1.5;
 }
 
-/* Tags main area (formation, etc.) */
 .cv-main .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .cv-main .tag {
-    display       : inline-block;
-    background    : var(--tag-bg);
-    color         : var(--tag-text);
-    border        : 1px solid var(--tag-border);
-    border-radius : var(--radius-tag);
-    padding       : 2px 10px;
-    font-size     : 8.5pt;
-    line-height   : 1.5;
-    font-weight   : 500;
+    display      : inline-block;
+    background   : var(--tag-bg);
+    color        : var(--tag-text);
+    border       : 1px solid var(--tag-border);
+    border-radius: var(--radius-tag);
+    padding      : 2px 10px;
+    font-size    : 8.5pt;
+    line-height  : 1.5;
+    font-weight  : 500;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -400,31 +469,30 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .skill-category {
-    font-size   : 9pt;
-    font-weight : bold;
-    color       : var(--sidebar-muted);
+    font-size     : 9pt;
+    font-weight   : bold;
+    color         : var(--sidebar-muted);
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    margin-top  : 12px;
-    margin-bottom: 5px;
+    margin-top    : 12px;
+    margin-bottom : 5px;
 }
-
 .skill-category:first-of-type { margin-top: 0; }
 
 /* ══════════════════════════════════════════════════════
    LANGUES (sidebar)
 ══════════════════════════════════════════════════════ */
 
-.lang-item      { margin-bottom: 8px; }
-.lang-name      { font-weight: bold; font-size: 10pt; }
-.lang-level     { font-size: 9pt; color: var(--sidebar-muted); }
+.lang-item  { margin-bottom: 8px; }
+.lang-name  { font-weight: bold; font-size: 10pt; }
+.lang-level { font-size: 9pt; color: var(--sidebar-muted); }
 
-.lang-dots      { display: flex; gap: 4px; margin-top: 3px; }
+.lang-dots { display: flex; gap: 4px; margin-top: 3px; }
 .lang-dot {
-    width         : 10px;
-    height        : 10px;
-    border-radius : 50%;
-    background    : var(--sidebar-tag-bd);
+    width        : 10px;
+    height       : 10px;
+    border-radius: 50%;
+    background   : var(--sidebar-tag-bd);
 }
 .lang-dot.filled { background: var(--sidebar-h2); }
 
@@ -432,21 +500,21 @@ body {
    ASSOCIATIONS (sidebar)
 ══════════════════════════════════════════════════════ */
 
-.assoc-entry    { margin-bottom: 10px; }
-.assoc-role     { font-weight: bold; font-size: 10pt; }
-.assoc-org      { font-size: 9pt; color: var(--sidebar-muted); font-style: italic; }
-.assoc-desc     { font-size: 9pt; margin-top: 2px; line-height: 1.4; }
+.assoc-entry { margin-bottom: 10px; }
+.assoc-role  { font-weight: bold; font-size: 10pt; }
+.assoc-org   { font-size: 9pt; color: var(--sidebar-muted); font-style: italic; }
+.assoc-desc  { font-size: 9pt; margin-top: 2px; line-height: 1.4; }
 
 /* ══════════════════════════════════════════════════════
    INTÉRÊTS (sidebar)
 ══════════════════════════════════════════════════════ */
 
 .interest-item {
-    font-size     : 9.5pt;
-    margin-bottom : 5px;
-    display       : flex;
-    align-items   : flex-start;
-    gap           : 6px;
+    font-size    : 9.5pt;
+    margin-bottom: 5px;
+    display      : flex;
+    align-items  : flex-start;
+    gap          : 6px;
 }
 
 .interest-item::before {
@@ -462,14 +530,49 @@ body {
 ══════════════════════════════════════════════════════ */
 
 .cv-summary {
-    background    : var(--accent-light);
-    border-left   : 3px solid var(--accent);
-    border-radius : 0 var(--radius-card) var(--radius-card) 0;
-    padding       : 10px 14px;
-    font-size     : 10pt;
-    line-height   : 1.6;
-    margin-bottom : 4px;
-    color         : var(--text);
+    background   : var(--accent-light);
+    border-left  : 3px solid var(--accent);
+    border-radius: 0 var(--radius-card) var(--radius-card) 0;
+    padding      : 10px 14px;
+    font-size    : 10pt;
+    line-height  : 1.6;
+    margin-bottom: 4px;
+    color        : var(--text);
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — TABLET (max 768px)
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .cv-page    { margin: 0; border-radius: 0; box-shadow: none; }
+    .cv-body    { flex-direction: column; }
+    .cv-sidebar { width: 100%; order: 2; padding: 20px 16px 28px; }
+    .cv-main    { order: 1; padding: 16px 16px 20px; }
+
+    .cv-header  { padding: 20px 16px 16px; }
+    .cv-name    { font-size: 18pt; letter-spacing: 2px; }
+    .cv-tagline { font-size: 10pt; }
+    .cv-contact { flex-direction: column; gap: 5px; }
+
+    .theme-toggle { top: 10px; right: 12px; padding: 3px 8px; font-size: 12px; }
+
+    .entry-header { flex-direction: column; gap: 5px; }
+    .entry-date   { align-self: flex-start; }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE (max 480px)
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+    .cv-name    { font-size: 15pt; letter-spacing: 1px; }
+    body        { font-size: 10pt; }
+    .cv-header  { padding: 16px 14px 12px; }
+    .cv-main,
+    .cv-sidebar { padding: 14px 14px 20px; }
+    .entry-card { padding: 10px 12px; }
+    .cv-tagline { font-size: 9.5pt; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -479,26 +582,28 @@ body {
 @page { margin: 10mm 12mm; }
 
 @media print {
-    /* Masquer éléments web uniquement */
     .theme-toggle { display: none !important; }
+    #cv-particles { display: none !important; }
 
-    /* Fond du CV plein page */
-    body, .cv-page { background: white; box-shadow: none; border-radius: 0; margin: 0; }
-
-    /* Conserver les couleurs de fond sidebar */
-    .cv-sidebar {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    body, .cv-page {
+        background   : white;
+        box-shadow   : none;
+        border-radius: 0;
+        margin       : 0;
     }
 
-    /* Éviter les coupures dans les cartes */
-    .entry-card { page-break-inside: avoid; }
-    .section-title { page-break-after: avoid; }
+    .cv-sidebar {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust        : exact;
+    }
 
-    /* Taille légèrement réduite à l'impression */
-    body { font-size: 9.5pt; }
+    .entry-card    { page-break-inside: avoid; }
+    .section-title { page-break-after:  avoid; }
+
+    body    { font-size: 9.5pt; }
     .cv-name { font-size: 20pt; }
 }
+
 
   </style>
 </head>
@@ -509,8 +614,8 @@ body {
   <header class="cv-header">
   <button class="theme-toggle no-print"     onclick="toggleTheme()" title="Dark mode">🌙</button>
   <div class="cv-name">Nils Levillain</div>
-  <div class="cv-tagline">Data & Supply Chain | Product Owner Analytics @ L'Oréal</div>
-  <div class="cv-contact"><span class="cv-contact-item"><span class="cv-contact-icon">✉</span>levillain.nils@gmail.com</span><span class="cv-contact-item"><span class="cv-contact-icon">☎</span>+33 06 69 56 69 37</span><span class="cv-contact-item"><span class="cv-contact-icon">📍</span>Paris, 75015, France</span><span class="cv-contact-item"><span class="cv-contact-icon">in</span>linkedin.com/in/nils-levillain</span></div>
+  <div class="cv-tagline">Tech Project Manager | Product Owner Analytics @ L'Oréal</div>
+  <div class="cv-contact"><span class="cv-contact-item"><span class="cv-contact-icon">✉</span><a href="mailto:levillain.nils@gmail.com" target="_blank" rel="noopener noreferrer" class="cv-contact-link">levillain.nils@gmail.com</a></span><span class="cv-contact-item"><span class="cv-contact-icon">☎</span>+33 06 69 56 69 37</span><span class="cv-contact-item"><span class="cv-contact-icon">📍</span>Paris, 75015, France</span><span class="cv-contact-item"><span class="cv-contact-icon">in</span><a href="https://linkedin.com/in/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">linkedin.com/in/nils-levillain</a></span><span class="cv-contact-item"><span class="cv-contact-icon">🐙</span><a href="https://github.com/nils-levillain" target="_blank" rel="noopener noreferrer" class="cv-contact-link">github.com/nils-levillain</a></span></div>
 </header>
 
 
@@ -520,7 +625,7 @@ body {
     <main class="cv-main">
 <section>
   <div class="section-title">Profile</div>
-  <p class="cv-summary">Supply Chain Engineer with 3+ years at L'Oréal, specialising in Data Products and logistics optimisation. End-to-end expertise: user discovery, data engineering (BigQuery, SQL), Power BI & Web App deployment, with direct impact on sustainability (CO2) and financial performance.</p>
+  <p class="cv-summary">Tech Project Manager & Technical Product Owner with 3+ years at L'Oréal. Expert in end-to-end tech project delivery in agile, global environments, bridging the gap between technical teams and business stakeholders across multiple zones. Expertise: cloud (GCP), AI/ML, change management, technology partner coordination, and multi-level communication.</p>
 </section>
 <section>
   <div class="section-title">Work Experience</div>
@@ -533,12 +638,12 @@ body {
       <div class="entry-date">January 2024 – Present</div>
     </div>
     <ul>
-      <li>Driving the development of global analytics products for the Fulfillment function (Transport, Customs, Warehouse) across all L'Oréal Zones and Divisions — 200+ active users.</li>
-      <li>Sustainability & CSR: CO2 Transport calculator; No Waste tool (end-of-life stock optimisation via ML forecasting, Linear Programming, Full-Stack Web App).</li>
-      <li>Financial Performance: transport efficiency tracking, Warehouse 360° Cockpit, Customs & Compliance monitoring, Anti-Diversion detection.</li>
-      <li>Discovery & Design: 30+ user interviews, tailored UX/UI Design.</li>
-      <li>Data Engineering: BigQuery modelling (Medallion Architecture, Star Schema), complex SQL transformations, data quality monitoring on GCP.</li>
-      <li>Stack: SQL (BigQuery), Python (ML/Optimisation), Power BI (DAX), GitHub (CI/CD).</li>
+      <li>Agile Tech Project Manager: end-to-end delivery of global analytics products across all L'Oréal Zones and Divisions — <span class="kpi-badge">200+ active users</span>; defined and executed the <strong>technical roadmap</strong>.</li>
+      <li>Bridge between tech and business: translated business needs into technical specifications; coordinated multiple <strong>stakeholders</strong> in a global, matrixed organisation (IT Zones, Divisions, Architects).</li>
+      <li>Innovation & AI: <strong>Proof-of-Concepts</strong> in AI/ML (forecasting, Linear Programming, Full-Stack Web App) — from ideation to global deployment; CO2 Transport calculator.</li>
+      <li>Cloud & Data Engineering: <strong>GCP (BigQuery)</strong>, Medallion Architecture, complex SQL, data quality monitoring in production.</li>
+      <li>Deployment & <strong>change management</strong>: Power BI (DAX), Web Apps, adoption & NPS tracking; technology partner coordination.</li>
+      <li>Reporting & impact: KPI definition, budget monitoring, presentation to both technical and business audiences.</li>
     </ul>
   </div>
   <div class="entry-card entry">
@@ -550,10 +655,10 @@ body {
       <div class="entry-date">September 2022 – December 2023</div>
     </div>
     <ul>
-      <li>WMS replacement project in the distribution centre (SAP → Manhattan).</li>
-      <li>BI Development: 20+ impactful reports, European developer community lead, data migration between systems.</li>
-      <li>WMS configuration & testing: definition and execution of 100+ test cases, progress KPI tracking.</li>
-      <li>Change management: documentation, training of operators and team leaders (~50h), deployment support.</li>
+      <li>Tech project delivery: WMS replacement in distribution centre (<strong>SAP → Manhattan</strong>), coordinating IT teams, operations, and <strong>external partners</strong> across multiple sites.</li>
+      <li>BI development & reporting: <span class="kpi-badge">20+</span> impactful reports, European developer community leadership, inter-system data migration.</li>
+      <li>Testing & quality: definition and execution of <span class="kpi-badge">100+</span> test cases, progress KPI tracking.</li>
+      <li><strong>Change management</strong>: documentation, <span class="kpi-badge">~50h</span> training for operators and team leaders, deployment support and continuous optimisation.</li>
     </ul>
   </div>
   <div class="entry-card entry">
@@ -565,35 +670,8 @@ body {
       <div class="entry-date">January 2022 – July 2022</div>
     </div>
     <ul>
-      <li>Planning, procurement and logistics for Garnier's Ultradoux promotional catalogue — 99% service rate.</li>
-      <li>20% reduction of stock discrepancies with the main co-packer (turnover & production) through monitoring dashboards.</li>
-      <li>SAP/APO · Power BI (PowerPivot, M, DAX) · Excel (M, DAX, VBA)</li>
-    </ul>
-  </div>
-  <div class="entry-card entry">
-    <div class="entry-header">
-      <div class="entry-left">
-        <div class="entry-title">Supply Chain Analyst</div>
-        <div class="entry-sub">Plastic Omnium · Internship · Sainte-Julie, France</div>
-      </div>
-      <div class="entry-date">June 2021 – August 2021</div>
-    </div>
-    <ul>
-      <li>Development of an optimal batch size calculation tool: requirements gathering, database & GUI, data visualisation.</li>
-      <li>Deployed in production plants — potential savings of €175K.</li>
-    </ul>
-  </div>
-  <div class="entry-card entry">
-    <div class="entry-header">
-      <div class="entry-left">
-        <div class="entry-title">Process Optimisation Consultant</div>
-        <div class="entry-sub">STMicroelectronics · University partnership · Grenoble, France</div>
-      </div>
-      <div class="entry-date">February 2021 – May 2021</div>
-    </div>
-    <ul>
-      <li>Optimisation of the employee onboarding and offboarding process.</li>
-      <li>Process formalisation, PDCA methodology, communication kits.</li>
+      <li>Planning, procurement and logistics for Garnier's promotional catalogue — <span class="kpi-badge">99% service rate</span>.</li>
+      <li><span class="kpi-badge">−20%</span> stock discrepancy reduction with main co-packer through monitoring dashboards.</li>
     </ul>
   </div>
 </section>
@@ -609,8 +687,7 @@ body {
     </div>
     <ul>
       <li>Industrial organisation, ERP (SAP), Industry 4.0, Lean manufacturing.</li>
-      <li>Data science, operations research, computer science.</li>
-      <li>Project management, sociology, economics.</li>
+      <li>Data science, operations research, project management.</li>
     </ul>
   </div>
   <div class="entry-card entry">
@@ -622,18 +699,8 @@ body {
       <div class="entry-date">2021 – 2022</div>
     </div>
     <ul>
-      <li>Enterprise resource planning (SAP), performance and cost analysis.</li>
-      <li>Data mining, machine learning.</li>
+      <li>Enterprise resource planning (SAP), data mining, machine learning.</li>
     </ul>
-  </div>
-  <div class="entry-card entry">
-    <div class="entry-header">
-      <div class="entry-left">
-        <div class="entry-title">Classe Préparatoire PCSI / PC*</div>
-        <div class="entry-sub">Lycée Champollion · Grenoble, France</div>
-      </div>
-      <div class="entry-date">2017 – 2019</div>
-    </div>
   </div>
 </section>
 
@@ -643,14 +710,12 @@ body {
     <aside class="cv-sidebar">
 <section>
   <div class="section-title">Skills</div>
-  <div class="skill-category">Data & BI</div>
-  <div class="tags"><span class="tag">SQL (BigQuery)</span><span class="tag">Python (Pandas, PySpark, Scikit-learn, TensorFlow)</span><span class="tag">R (tidyr, dplyr, ggplot2)</span><span class="tag">Power BI (DAX, M)</span><span class="tag">IBM Cognos Analytics</span></div>
-  <div class="skill-category">ERP & Supply Chain</div>
-  <div class="tags"><span class="tag">SAP (FI, CO, MM, PP, SD, APO)</span><span class="tag">Manhattan WMS</span><span class="tag">VSM · Kaizen · Lean Manufacturing</span><span class="tag">Arena</span></div>
-  <div class="skill-category">Dev & Tools</div>
-  <div class="tags"><span class="tag">Git / GitHub (CI/CD)</span><span class="tag">Java · OPL · UML</span><span class="tag">MS Office avancé (Excel, Access, Project)</span><span class="tag">VBA</span></div>
-  <div class="skill-category">Product & Methods</div>
-  <div class="tags"><span class="tag">Product Management</span><span class="tag">Agile / Scrum</span><span class="tag">UX/UI Design</span></div>
+  <div class="skill-category">Tech Project Management</div>
+  <div class="tags"><span class="tag">Agile / Scrum</span><span class="tag">Roadmap</span><span class="tag">PI Planning</span><span class="tag">Stakeholder Management</span><span class="tag">Change Management</span><span class="tag">Product Management</span><span class="tag">UX/UI Design</span></div>
+  <div class="skill-category">Cloud & Data</div>
+  <div class="tags"><span class="tag">GCP (BigQuery)</span><span class="tag">SQL</span><span class="tag">Python (ML/Optimisation)</span><span class="tag">Power BI (DAX, M)</span><span class="tag">GitHub (CI/CD)</span></div>
+  <div class="skill-category">Platforms & Tools</div>
+  <div class="tags"><span class="tag">SAP (FI, CO, MM, SD, APO)</span><span class="tag">Manhattan WMS</span><span class="tag">MS Office avancé (Excel, Project)</span></div>
 </section>
 <section>
   <div class="section-title">Languages</div>
@@ -675,19 +740,13 @@ body {
   <div class="assoc-entry">
     <div class="assoc-role">President of the Sports Committee</div>
     <div class="assoc-org">Grenoble INP · 2020 – 2021</div>
-    <div class="assoc-desc">Management of 27 people to drive student life over 18 months — budget managed: €25K.</div>
-  </div>
-  <div class="assoc-entry">
-    <div class="assoc-role">Project Lead – Fundraising</div>
-    <div class="assoc-org">School Association · 2018 – 2019</div>
-    <div class="assoc-desc">Organisation of fundraising campaigns for two school trips.</div>
+    <div class="assoc-desc">Management of 27 people over 18 months — budget managed: €25K.</div>
   </div>
 </section>
 <section>
   <div class="section-title">Interests</div>
   <div class="interest-item">Music & Art (self-taught guitarist and bassist)</div>
   <div class="interest-item">Skiing (10 years of club competition)</div>
-  <div class="interest-item">Volleyball (interuniversity competitions)</div>
   <div class="interest-item">Powerlifting (regional level)</div>
 </section>
 

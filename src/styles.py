@@ -4,7 +4,7 @@
 """
 from data.cv_config import ACCENT_COLOR, SIDEBAR_COLOR, FONT_FAMILY, FONT_SIZE_BASE
 
-# ── JavaScript : toggle thème ─────────────────────────────────
+# ── JavaScript : toggle thème + particules ────────────────────
 THEME_JS = """
 (function () {
     const saved       = localStorage.getItem('cv-theme');
@@ -14,8 +14,8 @@ THEME_JS = """
 })();
 
 function toggleTheme() {
-    const html  = document.documentElement;
-    const next  = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('cv-theme', next);
     const btn = document.querySelector('.theme-toggle');
@@ -33,9 +33,73 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.title       = theme === 'dark' ? 'Light mode' : 'Dark mode';
     }
 });
+
+function initParticles() {
+    if (document.getElementById('cv-particles')) return;
+
+    const canvas  = document.createElement('canvas');
+    canvas.id     = 'cv-particles';
+    canvas.style.cssText = [
+        'position:fixed', 'top:0', 'left:0',
+        'width:100%', 'height:100%',
+        'z-index:-1', 'pointer-events:none',
+    ].join(';');
+    document.body.prepend(canvas);
+
+    const ctx       = canvas.getContext('2d');
+    const COUNT     = 55;
+    const particles = [];
+
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function make() {
+        return {
+            x  : Math.random() * canvas.width,
+            y  : Math.random() * canvas.height,
+            r  : Math.random() * 1.8 + 0.4,
+            dx : (Math.random() - 0.5) * 0.22,
+            dy : (Math.random() - 0.5) * 0.22,
+            a  : Math.random() * 0.18 + 0.04,
+        };
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < COUNT; i++) particles.push(make());
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const rgb  = dark ? '147,197,253' : '37,99,235';
+
+        particles.forEach(p => {
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < -4) p.x = canvas.width  + 4;
+            if (p.x > canvas.width  + 4) p.x = -4;
+            if (p.y < -4) p.y = canvas.height + 4;
+            if (p.y > canvas.height + 4) p.y = -4;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb},${p.a})`;
+            ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+document.addEventListener('DOMContentLoaded', initParticles);
 """
 
+# ── CSS ───────────────────────────────────────────────────────
 def get_styles() -> str:
+    """Retourne le CSS complet. Tout le CSS est ICI, dans cette fonction."""
     return f"""
 
 /* ══════════════════════════════════════════════════════
@@ -43,21 +107,17 @@ def get_styles() -> str:
 ══════════════════════════════════════════════════════ */
 
 :root {{
-    /* ── Accent ── */
     --accent          : {ACCENT_COLOR};
     --accent-light    : #eff6ff;
 
-    /* ── Page ── */
-    --page-bg         : #eef2f7;
+    --page-bg         : #ffffff;
     --shadow-page     : 0 4px 40px rgba(0,0,0,0.10);
 
-    /* ── Header ── */
     --header-bg       : #ffffff;
     --name-color      : {SIDEBAR_COLOR};
     --tagline-color   : #475569;
     --contact-color   : #64748b;
 
-    /* ── Sidebar ── */
     --sidebar-bg      : {SIDEBAR_COLOR};
     --sidebar-text    : #e2e8f0;
     --sidebar-muted   : #94a3b8;
@@ -66,7 +126,6 @@ def get_styles() -> str:
     --sidebar-tag-bg  : rgba(255,255,255,0.10);
     --sidebar-tag-bd  : rgba(255,255,255,0.20);
 
-    /* ── Main area ── */
     --main-bg         : #ffffff;
     --card-bg         : #f8fafc;
     --card-border     : #e2e8f0;
@@ -75,17 +134,14 @@ def get_styles() -> str:
     --text-muted      : #64748b;
     --section-border  : {ACCENT_COLOR};
 
-    /* ── Tags (main) ── */
     --tag-bg          : #eff6ff;
     --tag-text        : #1d4ed8;
     --tag-border      : #bfdbfe;
 
-    /* ── KPI badges ── */
     --kpi-bg          : #fffbeb;
     --kpi-text        : #b45309;
     --kpi-border      : #fde68a;
 
-    /* ── Misc ── */
     --radius-card     : 8px;
     --radius-tag      : 100px;
     --font            : {FONT_FAMILY};
@@ -145,23 +201,33 @@ body {{
 }}
 
 /* ══════════════════════════════════════════════════════
+   CANVAS PARTICULES
+══════════════════════════════════════════════════════ */
+
+#cv-particles {{ display: block; }}
+
+@media print {{
+    #cv-particles {{ display: none; }}
+}}
+
+/* ══════════════════════════════════════════════════════
    THEME TOGGLE BUTTON
 ══════════════════════════════════════════════════════ */
 
 .theme-toggle {{
-    position    : absolute;
-    top         : 16px;
-    right       : 20px;
-    background  : var(--card-bg);
-    border      : 1px solid var(--card-border);
+    position     : absolute;
+    top          : 16px;
+    right        : 20px;
+    background   : var(--card-bg);
+    border       : 1px solid var(--card-border);
     border-radius: var(--radius-tag);
-    padding     : 4px 12px;
-    font-size   : 14px;
-    cursor      : pointer;
-    box-shadow  : var(--card-shadow);
-    transition  : all 0.2s;
-    z-index     : 10;
-    line-height : 1.4;
+    padding      : 4px 12px;
+    font-size    : 14px;
+    cursor       : pointer;
+    box-shadow   : var(--card-shadow);
+    transition   : all 0.2s;
+    z-index      : 10;
+    line-height  : 1.4;
 }}
 .theme-toggle:hover {{ box-shadow: 0 4px 16px rgba(0,0,0,0.15); }}
 
@@ -170,11 +236,13 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .cv-page {{
-    max-width     : 920px;
-    margin        : 24px auto;
-    border-radius : 12px;
-    overflow      : hidden;
-    box-shadow    : var(--shadow-page);
+    max-width    : 920px;
+    margin       : 24px auto;
+    border-radius: 12px;
+    overflow     : hidden;
+    box-shadow   : var(--shadow-page);
+    position     : relative;
+    z-index      : 1;
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -182,47 +250,57 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .cv-header {{
-    background  : var(--header-bg);
-    padding     : 28px 36px 24px;
-    position    : relative;
+    background   : var(--header-bg);
+    padding      : 28px 36px 24px;
+    position     : relative;
     border-bottom: 3px solid var(--accent);
-    transition  : background 0.2s;
+    transition   : background 0.2s;
 }}
 
 .cv-name {{
-    font-size      : 26pt;
-    font-weight    : bold;
-    letter-spacing : 3px;
-    text-transform : uppercase;
-    color          : var(--name-color);
-    line-height    : 1.1;
-    margin-bottom  : 6px;
+    font-size     : 26pt;
+    font-weight   : bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color         : var(--name-color);
+    line-height   : 1.1;
+    margin-bottom : 6px;
 }}
 
 .cv-tagline {{
-    font-size   : 11pt;
-    color       : var(--accent);
-    font-weight : 600;
+    font-size    : 11pt;
+    color        : var(--accent);
+    font-weight  : 600;
     margin-bottom: 10px;
 }}
 
 .cv-contact {{
-    font-size   : 9.5pt;
-    color       : var(--contact-color);
-    display     : flex;
-    flex-wrap   : wrap;
-    gap         : 4px 20px;
+    font-size : 9.5pt;
+    color     : var(--contact-color);
+    display   : flex;
+    flex-wrap : wrap;
+    gap       : 4px 20px;
 }}
 
 .cv-contact-item {{
-    display     : flex;
-    align-items : center;
-    gap         : 4px;
+    display    : flex;
+    align-items: center;
+    gap        : 4px;
 }}
 
 .cv-contact-icon {{
-    font-size   : 10pt;
-    opacity     : 0.7;
+    font-size: 10pt;
+    opacity  : 0.7;
+}}
+
+.cv-contact-link {{
+    color          : inherit;
+    text-decoration: none;
+    transition     : color 0.15s;
+}}
+.cv-contact-link:hover {{
+    color          : var(--accent);
+    text-decoration: underline;
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -230,29 +308,27 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .cv-body {{
-    display         : flex;
-    min-height      : 700px;
-    align-items     : stretch;
+    display    : flex;
+    min-height : 700px;
+    align-items: stretch;
 }}
 
-/* ── Sidebar ── */
 .cv-sidebar {{
-    width       : 265px;
-    flex-shrink : 0;
-    background  : var(--sidebar-bg);
-    color       : var(--sidebar-text);
-    padding     : 24px 20px 32px;
-    order       : -1;           /* visuellement à gauche */
-    transition  : background 0.2s;
+    width      : 265px;
+    flex-shrink: 0;
+    background : var(--sidebar-bg);
+    color      : var(--sidebar-text);
+    padding    : 24px 20px 32px;
+    order      : -1;
+    transition : background 0.2s;
 }}
 
-/* ── Main ── */
 .cv-main {{
-    flex        : 1;
-    background  : var(--main-bg);
-    padding     : 24px 28px 32px;
-    order       : 1;            /* visuellement à droite */
-    transition  : background 0.2s;
+    flex      : 1;
+    background: var(--main-bg);
+    padding   : 24px 28px 32px;
+    order     : 1;
+    transition: background 0.2s;
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -260,26 +336,24 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .section-title {{
-    font-size      : 8.5pt;
-    font-weight    : bold;
-    text-transform : uppercase;
-    letter-spacing : 2px;
-    margin-top     : 22px;
-    margin-bottom  : 12px;
-    padding-bottom : 6px;
+    font-size     : 8.5pt;
+    font-weight   : bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top    : 22px;
+    margin-bottom : 12px;
+    padding-bottom: 6px;
 }}
 
-/* Main : accent + bordure */
 .cv-main .section-title {{
-    color        : var(--accent);
+    color       : var(--accent);
     border-bottom: 1.5px solid var(--section-border);
 }}
 
-/* Sidebar : couleur claire sur fond foncé */
 .cv-sidebar .section-title {{
-    color        : var(--sidebar-h2);
+    color       : var(--sidebar-h2);
     border-bottom: 1px solid var(--sidebar-border);
-    margin-top   : 24px;
+    margin-top  : 24px;
 }}
 
 .cv-sidebar .section-title:first-child {{ margin-top: 0; }}
@@ -289,64 +363,63 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .entry-card {{
-    background    : var(--card-bg);
-    border        : 1px solid var(--card-border);
-    border-left   : 3px solid var(--accent);
-    border-radius : var(--radius-card);
-    padding       : 12px 14px;
-    margin-bottom : 10px;
-    box-shadow    : var(--card-shadow);
-    transition    : background 0.2s, box-shadow 0.2s;
+    background   : var(--card-bg);
+    border       : 1px solid var(--card-border);
+    border-left  : 3px solid var(--accent);
+    border-radius: var(--radius-card);
+    padding      : 12px 14px;
+    margin-bottom: 10px;
+    box-shadow   : var(--card-shadow);
+    transition   : background 0.2s, box-shadow 0.2s;
 }}
 
 .entry-header {{
-    display         : flex;
-    justify-content : space-between;
-    align-items     : flex-start;
-    gap             : 10px;
-    margin-bottom   : 4px;
+    display        : flex;
+    justify-content: space-between;
+    align-items    : flex-start;
+    gap            : 10px;
+    margin-bottom  : 4px;
 }}
 
-.entry-left  {{ flex: 1; min-width: 0; }}
+.entry-left {{ flex: 1; min-width: 0; }}
 
 .entry-title {{
-    font-weight : bold;
-    font-size   : 10.5pt;
-    color       : var(--text);
-    line-height : 1.3;
+    font-weight: bold;
+    font-size  : 10.5pt;
+    color      : var(--text);
+    line-height: 1.3;
 }}
 
 .entry-sub {{
-    font-size  : 9.5pt;
-    color      : var(--text-muted);
-    font-style : italic;
-    margin-top : 2px;
+    font-size : 9.5pt;
+    color     : var(--text-muted);
+    font-style: italic;
+    margin-top: 2px;
 }}
 
 .entry-date {{
-    font-size   : 9pt;
-    color       : var(--text-muted);
-    white-space : nowrap;
-    text-align  : right;
-    flex-shrink : 0;
-    padding-top : 1px;
-    background  : var(--accent-light);
+    font-size    : 9pt;
+    color        : var(--text-muted);
+    white-space  : nowrap;
+    text-align   : right;
+    flex-shrink  : 0;
+    background   : var(--accent-light);
     border-radius: var(--radius-tag);
-    padding     : 2px 8px;
-    height      : fit-content;
-    font-weight : 500;
+    padding      : 2px 8px;
+    height       : fit-content;
+    font-weight  : 500;
 }}
 
 .entry ul {{
-    margin-left : 16px;
-    margin-top  : 7px;
+    margin-left: 16px;
+    margin-top : 7px;
 }}
 
 .entry ul li {{
-    font-size     : 10pt;
-    margin-bottom : 3px;
-    line-height   : 1.45;
-    color         : var(--text);
+    font-size    : 10pt;
+    margin-bottom: 3px;
+    line-height  : 1.45;
+    color        : var(--text);
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -367,34 +440,32 @@ body {{
 }}
 
 /* ══════════════════════════════════════════════════════
-   TAGS (sidebar + main)
+   TAGS
 ══════════════════════════════════════════════════════ */
 
-/* Tags sidebar */
 .cv-sidebar .tags {{ display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }}
 .cv-sidebar .tag {{
-    display       : inline-block;
-    background    : var(--sidebar-tag-bg);
-    color         : var(--sidebar-text);
-    border        : 1px solid var(--sidebar-tag-bd);
-    border-radius : var(--radius-tag);
-    padding       : 2px 10px;
-    font-size     : 8.5pt;
-    line-height   : 1.5;
+    display      : inline-block;
+    background   : var(--sidebar-tag-bg);
+    color        : var(--sidebar-text);
+    border       : 1px solid var(--sidebar-tag-bd);
+    border-radius: var(--radius-tag);
+    padding      : 2px 10px;
+    font-size    : 8.5pt;
+    line-height  : 1.5;
 }}
 
-/* Tags main area (formation, etc.) */
 .cv-main .tags {{ display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }}
 .cv-main .tag {{
-    display       : inline-block;
-    background    : var(--tag-bg);
-    color         : var(--tag-text);
-    border        : 1px solid var(--tag-border);
-    border-radius : var(--radius-tag);
-    padding       : 2px 10px;
-    font-size     : 8.5pt;
-    line-height   : 1.5;
-    font-weight   : 500;
+    display      : inline-block;
+    background   : var(--tag-bg);
+    color        : var(--tag-text);
+    border       : 1px solid var(--tag-border);
+    border-radius: var(--radius-tag);
+    padding      : 2px 10px;
+    font-size    : 8.5pt;
+    line-height  : 1.5;
+    font-weight  : 500;
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -402,31 +473,30 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .skill-category {{
-    font-size   : 9pt;
-    font-weight : bold;
-    color       : var(--sidebar-muted);
+    font-size     : 9pt;
+    font-weight   : bold;
+    color         : var(--sidebar-muted);
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    margin-top  : 12px;
-    margin-bottom: 5px;
+    margin-top    : 12px;
+    margin-bottom : 5px;
 }}
-
 .skill-category:first-of-type {{ margin-top: 0; }}
 
 /* ══════════════════════════════════════════════════════
    LANGUES (sidebar)
 ══════════════════════════════════════════════════════ */
 
-.lang-item      {{ margin-bottom: 8px; }}
-.lang-name      {{ font-weight: bold; font-size: 10pt; }}
-.lang-level     {{ font-size: 9pt; color: var(--sidebar-muted); }}
+.lang-item  {{ margin-bottom: 8px; }}
+.lang-name  {{ font-weight: bold; font-size: 10pt; }}
+.lang-level {{ font-size: 9pt; color: var(--sidebar-muted); }}
 
-.lang-dots      {{ display: flex; gap: 4px; margin-top: 3px; }}
+.lang-dots {{ display: flex; gap: 4px; margin-top: 3px; }}
 .lang-dot {{
-    width         : 10px;
-    height        : 10px;
-    border-radius : 50%;
-    background    : var(--sidebar-tag-bd);
+    width        : 10px;
+    height       : 10px;
+    border-radius: 50%;
+    background   : var(--sidebar-tag-bd);
 }}
 .lang-dot.filled {{ background: var(--sidebar-h2); }}
 
@@ -434,21 +504,21 @@ body {{
    ASSOCIATIONS (sidebar)
 ══════════════════════════════════════════════════════ */
 
-.assoc-entry    {{ margin-bottom: 10px; }}
-.assoc-role     {{ font-weight: bold; font-size: 10pt; }}
-.assoc-org      {{ font-size: 9pt; color: var(--sidebar-muted); font-style: italic; }}
-.assoc-desc     {{ font-size: 9pt; margin-top: 2px; line-height: 1.4; }}
+.assoc-entry {{ margin-bottom: 10px; }}
+.assoc-role  {{ font-weight: bold; font-size: 10pt; }}
+.assoc-org   {{ font-size: 9pt; color: var(--sidebar-muted); font-style: italic; }}
+.assoc-desc  {{ font-size: 9pt; margin-top: 2px; line-height: 1.4; }}
 
 /* ══════════════════════════════════════════════════════
    INTÉRÊTS (sidebar)
 ══════════════════════════════════════════════════════ */
 
 .interest-item {{
-    font-size     : 9.5pt;
-    margin-bottom : 5px;
-    display       : flex;
-    align-items   : flex-start;
-    gap           : 6px;
+    font-size    : 9.5pt;
+    margin-bottom: 5px;
+    display      : flex;
+    align-items  : flex-start;
+    gap          : 6px;
 }}
 
 .interest-item::before {{
@@ -464,14 +534,49 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .cv-summary {{
-    background    : var(--accent-light);
-    border-left   : 3px solid var(--accent);
-    border-radius : 0 var(--radius-card) var(--radius-card) 0;
-    padding       : 10px 14px;
-    font-size     : 10pt;
-    line-height   : 1.6;
-    margin-bottom : 4px;
-    color         : var(--text);
+    background   : var(--accent-light);
+    border-left  : 3px solid var(--accent);
+    border-radius: 0 var(--radius-card) var(--radius-card) 0;
+    padding      : 10px 14px;
+    font-size    : 10pt;
+    line-height  : 1.6;
+    margin-bottom: 4px;
+    color        : var(--text);
+}}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — TABLET (max 768px)
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {{
+    .cv-page    {{ margin: 0; border-radius: 0; box-shadow: none; }}
+    .cv-body    {{ flex-direction: column; }}
+    .cv-sidebar {{ width: 100%; order: 2; padding: 20px 16px 28px; }}
+    .cv-main    {{ order: 1; padding: 16px 16px 20px; }}
+
+    .cv-header  {{ padding: 20px 16px 16px; }}
+    .cv-name    {{ font-size: 18pt; letter-spacing: 2px; }}
+    .cv-tagline {{ font-size: 10pt; }}
+    .cv-contact {{ flex-direction: column; gap: 5px; }}
+
+    .theme-toggle {{ top: 10px; right: 12px; padding: 3px 8px; font-size: 12px; }}
+
+    .entry-header {{ flex-direction: column; gap: 5px; }}
+    .entry-date   {{ align-self: flex-start; }}
+}}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE (max 480px)
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {{
+    .cv-name    {{ font-size: 15pt; letter-spacing: 1px; }}
+    body        {{ font-size: 10pt; }}
+    .cv-header  {{ padding: 16px 14px 12px; }}
+    .cv-main,
+    .cv-sidebar {{ padding: 14px 14px 20px; }}
+    .entry-card {{ padding: 10px 12px; }}
+    .cv-tagline {{ font-size: 9.5pt; }}
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -481,24 +586,26 @@ body {{
 @page {{ margin: 10mm 12mm; }}
 
 @media print {{
-    /* Masquer éléments web uniquement */
     .theme-toggle {{ display: none !important; }}
+    #cv-particles {{ display: none !important; }}
 
-    /* Fond du CV plein page */
-    body, .cv-page {{ background: white; box-shadow: none; border-radius: 0; margin: 0; }}
-
-    /* Conserver les couleurs de fond sidebar */
-    .cv-sidebar {{
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    body, .cv-page {{
+        background   : white;
+        box-shadow   : none;
+        border-radius: 0;
+        margin       : 0;
     }}
 
-    /* Éviter les coupures dans les cartes */
-    .entry-card {{ page-break-inside: avoid; }}
-    .section-title {{ page-break-after: avoid; }}
+    .cv-sidebar {{
+        -webkit-print-color-adjust: exact;
+        print-color-adjust        : exact;
+    }}
 
-    /* Taille légèrement réduite à l'impression */
-    body {{ font-size: 9.5pt; }}
+    .entry-card    {{ page-break-inside: avoid; }}
+    .section-title {{ page-break-after:  avoid; }}
+
+    body    {{ font-size: 9.5pt; }}
     .cv-name {{ font-size: 20pt; }}
 }}
+
 """

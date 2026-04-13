@@ -50,20 +50,34 @@ def _lang_dots(filled: int, total: int = 5) -> str:
 def build_header(personal: dict, lang: str) -> str:
     p = personal
 
-    # Icônes contact
-    icons = {"email": "✉", "phone": "☎", "location": "📍", "linkedin": "in"}
-    contact_fields = [
-        ("email",    icons["email"],    p.get("email",    "")),
-        ("phone",    icons["phone"],    p.get("phone",    "")),
-        ("location", icons["location"], p.get("location", "")),
-        ("linkedin", icons["linkedin"], p.get("linkedin", "")),
+    def contact_item(icon: str, text: str, href: str = None) -> str:
+        if not text:
+            return ""
+        label = (
+            f'<a href="{href}" target="_blank" rel="noopener noreferrer" '
+            f'class="cv-contact-link">{text}</a>'
+            if href else text
+        )
+        return (
+            f'<span class="cv-contact-item">'
+            f'<span class="cv-contact-icon">{icon}</span>{label}'
+            f'</span>'
+        )
+
+    email    = p.get("email",    "")
+    phone    = p.get("phone",    "")
+    location = p.get("location", "")
+    linkedin = p.get("linkedin", "")
+    github   = p.get("github",   "")
+
+    contact_parts = [
+        contact_item("✉",  email,    f"mailto:{email}"           if email    else None),
+        contact_item("☎",  phone,    None),
+        contact_item("📍", location, None),
+        contact_item("in", linkedin, f"https://{linkedin}"       if linkedin else None),
+        contact_item("🐙", github,   f"https://{github}"         if github   else None),
     ]
-    contact_html = "".join(
-        f'<span class="cv-contact-item">'
-        f'<span class="cv-contact-icon">{icon}</span>{value}'
-        f'</span>'
-        for _, icon, value in contact_fields if value
-    )
+    contact_html = "".join(p for p in contact_parts if p)
 
     return (
         f'<header class="cv-header">\n'
