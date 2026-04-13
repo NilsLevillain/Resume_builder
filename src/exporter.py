@@ -94,20 +94,31 @@ def _pdf_exists(path: str) -> bool:
 def _try_playwright(html: str, pdf_path: str) -> bool:
     try:
         from playwright.sync_api import sync_playwright
+
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            page    = browser.new_page()
+            # Viewport large → évite le déclenchement des media queries mobiles
+            page = browser.new_page(viewport={"width": 1400, "height": 900})
             page.set_content(html, wait_until="domcontentloaded")
+            page.wait_for_timeout(400)   # laisse le JS (particules) s'initialiser
+
             page.pdf(
                 path=pdf_path,
                 format="A4",
-                print_background=True,
-                margin={"top": "10mm", "bottom": "10mm",
-                        "left": "12mm", "right": "12mm"},
+                print_background=True,   # conserve les couleurs sidebar, KPI, etc.
+                scale=0.82,              # réduit légèrement pour tenir sur 1 page
+                margin={
+                    "top"   : "0mm",
+                    "bottom": "0mm",
+                    "left"  : "0mm",
+                    "right" : "0mm",
+                },
             )
             browser.close()
+
         print(f"  ✅  PDF   →  {pdf_path}  (Playwright)")
         return True
+
     except ImportError:
         print("  ℹ   Playwright non installé → essai suivant…")
         return False
@@ -116,41 +127,100 @@ def _try_playwright(html: str, pdf_path: str) -> bool:
         return False
 
 def _try_browser_headless(html_path: str, pdf_path: str) -> bool:
+    """
+    Sert le HTML depuis un serveur localhost (évite les restrictions file://)
+    puis utilise Chrome ou Edge installé sur la machine pour générer le PDF.
+    """
+    import threading
+    import http.server
+    import socketserver
+
+    # ── Trouver Chrome ou Edge ───────────────────────────────
     candidates = [
-        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
         r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
         r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-        "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-        "google-chrome", "chromium-browser", "chromium",
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+        os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Edge\Application\msedge.exe"),
+        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
     ]
+
     browser_exe = next(
-        (c for c in candidates
-         if (os.path.isabs(c) and os.path.exists(c)) or shutil.which(c)),
-        None,
+        (c for c in candidates if os.path.exists(c)),
+        shutil.which("msedge") or shutil.which("google-chrome"),
     )
+
     if not browser_exe:
         print("  ℹ   Chrome / Edge non trouvé → essai suivant…")
         return False
 
-    name = "Edge" if "msedge" in browser_exe.lower() else "Chrome"
+    browser_name = "Edge" if "msedge" in browser_exe.lower() else "Chrome"
+
+    # ── Serveur HTTP local (contourne les restrictions file://) ──
+    html_dir  = os.path.dirname(os.path.abspath(html_path))
+    html_file = os.path.basename(html_path)
+
+    class _QuietHandler(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory=html_dir, **kwargs)
+        def log_message(self, *args, **kwargs):
+            pass   # silencieux
+
+    # Essaie deux ports au cas où l'un serait occupé
+    httpd = None
+    port  = None
+    for p in (18765, 19876, 20001):
+        try:
+            httpd = socketserver.TCPServer(("127.0.0.1", p), _QuietHandler)
+            port  = p
+            break
+        except OSError:
+            continue
+
+    if not httpd:
+        print("  ⚠   Impossible d'ouvrir un port local → essai suivant…")
+        return False
+
+    server_thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    server_thread.start()
+
     try:
-        uri = "file:///" + os.path.abspath(html_path).replace(os.sep, "/")
+        url     = f"http://127.0.0.1:{port}/{html_file}"
+        abs_pdf = os.path.abspath(pdf_path)
+
         subprocess.run(
-            [browser_exe, "--headless=new", "--disable-gpu", "--no-sandbox",
-             "--print-to-pdf-no-header", f"--print-to-pdf={os.path.abspath(pdf_path)}", uri],
-            capture_output=True, timeout=30, check=False,
+            [
+                browser_exe,
+                "--headless=new",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--no-first-run",
+                "--disable-extensions",
+                "--disable-background-networking",
+                "--print-to-pdf-no-header",
+                f"--print-to-pdf={abs_pdf}",
+                url,
+            ],
+            capture_output=True,
+            timeout=25,
+            check=False,
         )
+
         if _pdf_exists(pdf_path):
-            print(f"  ✅  PDF   →  {pdf_path}  ({name} headless)")
+            print(f"  ✅  PDF   →  {pdf_path}  ({browser_name} headless)")
             return True
-        print(f"  ⚠   {name} : PDF vide → essai suivant…")
+
+        print(f"  ⚠   {browser_name} : PDF vide → essai suivant…")
+        return False
+
+    except subprocess.TimeoutExpired:
+        print(f"  ⚠   {browser_name} : timeout → essai suivant…")
         return False
     except Exception as e:
-        print(f"  ⚠   {name} : {e} → essai suivant…")
+        print(f"  ⚠   {browser_name} : {e} → essai suivant…")
         return False
+    finally:
+        httpd.shutdown()
 
 def _try_xhtml2pdf(html: str, pdf_path: str) -> bool:
     try:
