@@ -48,7 +48,7 @@ function initParticles() {
     document.body.prepend(canvas);
 
     const ctx       = canvas.getContext('2d');
-    const COUNT     = 400;
+    const COUNT     = 333;
     const particles = [];
 
     function resize() {
@@ -61,8 +61,8 @@ function initParticles() {
             x  : Math.random() * canvas.width,
             y  : Math.random() * canvas.height,
             r  : Math.random() * 2 + 0.6,
-            dx : (Math.random() - 0.5) * 0.99,
-            dy : (Math.random() - 0.5) * 0.99,
+            dx : (Math.random() - 0.5) * 0.77,
+            dy : (Math.random() - 0.5) * 0.77,
             a  : Math.random() * 0.25 + 0.09,
         };
     }
@@ -286,16 +286,99 @@ body {{
         border-left-color: #1d4ed8 !important;
     }}
 
-    /* ── Désactiver animations au print / PDF ── */
-    @media print {{
-        [style*="opacity"] {{ opacity: 1 !important; }}
-        [style*="transform"] {{ transform: none !important; }}
-    }}
+  
+ /* ══════════════════════════════════════════════════════
+   IMPRESSION / PDF
+══════════════════════════════════════════════════════ */
 
-
+@page {{ margin: 5mm 8mm; }}
 
 @media print {{
-    #cv-particles {{ display: none; }}
+
+    .theme-toggle,
+    #cv-particles {{ display: none !important; }}
+
+    [style*="opacity"]   {{ opacity: 1 !important; }}
+    [style*="transform"] {{ transform: none !important; }}
+
+    html, body {{ height: auto !important; overflow: visible !important; }}
+
+    body, .cv-page {{
+        background   : white !important;
+        box-shadow   : none  !important;
+        border-radius: 0     !important;
+        margin       : 0     !important;
+        max-width    : none  !important;
+    }}
+    body {{ font-size: 8pt !important; line-height: 1.3 !important; }}
+
+    /* Header */
+    .cv-header          {{ flex-direction: row !important; }}
+    .cv-header-photo-col {{
+        width  : 190px  !important;
+        padding: 10px   !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust        : exact;
+    }}
+    .cv-photo,
+    .cv-photo-placeholder {{ width: 78px !important; height: 78px !important; }}
+    .cv-photo-placeholder  {{ font-size: 18pt !important; }}
+    .cv-header-info-col    {{ padding: 10px 36px 10px 16px !important; }}
+    .cv-name    {{ font-size: 16pt !important; letter-spacing: 2px !important; margin-bottom: 3px !important; }}
+    .cv-tagline {{ font-size: 8pt  !important; margin-bottom: 5px !important; }}
+    .cv-contact {{ font-size: 7pt  !important; gap: 2px 10px !important; }}
+    .cv-contact-icon svg.cv-icon {{ width: 8px !important; height: 8px !important; }}
+
+    /* Corps */
+    .cv-body {{
+        display        : flex          !important;
+        flex-direction : row           !important;
+        min-height     : 0             !important;
+        align-items    : flex-start    !important;
+    }}
+    .cv-sidebar {{
+        width     : 190px !important;
+        order     : -1    !important;
+        padding   : 10px 12px 12px !important;
+        height    : auto !important;
+        align-self: flex-start !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust        : exact;
+    }}
+    .cv-main {{ order: 1 !important; padding: 10px 14px 12px !important; }}
+
+    /* Titres */
+    .section-title {{
+        font-size     : 7.5pt !important;
+        letter-spacing: 1.5px !important;
+        margin-top    : 9px   !important;
+        margin-bottom : 6px   !important;
+        padding-bottom: 3px   !important;
+    }}
+    .cv-main > section:first-child .section-title {{ margin-top: 0 !important; }}
+
+    /* Cartes */
+    .entry-card      {{ padding: 5px 8px !important; margin-bottom: 4px !important; page-break-inside: avoid; }}
+    .section-title   {{ page-break-after: avoid; }}
+    .entry-title     {{ font-size: 7.5pt !important; }}
+    .entry-sub       {{ font-size: 6.5pt !important; }}
+    .entry-date      {{ font-size: 6.5pt !important; padding: 1px 4px !important; }}
+    .entry ul        {{ margin-left: 10px !important; margin-top: 2px !important; }}
+    .entry ul li     {{ font-size: 7pt !important; margin-bottom: 1px !important; line-height: 1.3 !important; }}
+    .cv-summary      {{ font-size: 7pt !important; padding: 5px 8px !important; }}
+
+    /* Sidebar */
+    .skill-category  {{ font-size: 6pt !important; margin-top: 6px !important; margin-bottom: 2px !important; }}
+    .tag             {{ font-size: 6pt !important; padding: 1px 5px !important; }}
+    .lang-item       {{ margin-bottom: 3px !important; }}
+    .lang-name       {{ font-size: 7.5pt !important; }}
+    .lang-level      {{ font-size: 6.5pt !important; }}
+    .assoc-entry     {{ margin-bottom: 4px !important; }}
+    .assoc-role      {{ font-size: 7.5pt !important; }}
+    .assoc-org,
+    .assoc-desc      {{ font-size: 6.5pt !important; }}
+    .interest-item   {{ font-size: 6.5pt !important; margin-bottom: 2px !important; }}
+    .kpi-badge       {{ font-size: 6.5pt !important; padding: 0 3px !important; }}
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -324,7 +407,7 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 .cv-page {{
-    max-width    : 920px;
+    max-width    : 1000px; /* was 920px */
     margin       : 24px auto;
     border-radius: 12px;
     overflow     : hidden;
@@ -334,51 +417,120 @@ body {{
 }}
 
 /* ══════════════════════════════════════════════════════
-   HEADER
+   HEADER — photo gauche, info droite
 ══════════════════════════════════════════════════════ */
 
 .cv-header {{
-    background   : var(--header-bg);
-    padding      : 28px 36px 24px;
-    position     : relative;
-    border-bottom: 3px solid var(--accent);
-    transition   : background 0.2s;
+    display       : flex;
+    flex-direction: row;
+    align-items   : stretch;
+    border-bottom : 3px solid var(--accent);
+    position      : relative;
+    padding       : 0;
+}}
+
+.cv-header-photo-col {{
+    width          : 265px;
+    flex-shrink    : 0;
+    background     : var(--sidebar-bg);
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    padding        : 20px;
+    transition     : background 0.2s;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust        : exact;
+}}
+
+.cv-photo {{
+    width        : 110px;
+    height       : 110px;
+    border-radius: 50%;
+    object-fit   : cover;
+    border       : 3px solid rgba(255,255,255,0.35);
+    display      : block;
+}}
+
+.cv-photo-placeholder {{
+    width          : 110px;
+    height         : 110px;
+    border-radius  : 50%;
+    background     : rgba(255,255,255,0.07);
+    border         : 2px dashed rgba(255,255,255,0.25);
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    font-size      : 24pt;
+    font-weight    : bold;
+    color          : rgba(255,255,255,0.45);
+    letter-spacing : 3px;
+}}
+
+.cv-header-info-col {{
+    flex      : 1;
+    background: var(--header-bg);
+    padding   : 22px 56px 18px 22px;
+    position  : relative;
+    transition: background 0.2s;
+    display   : flex;
+    flex-direction: column;
+    justify-content: center;
 }}
 
 .cv-name {{
-    font-size     : 26pt;
+    font-size     : 24pt;
     font-weight   : bold;
     letter-spacing: 3px;
     text-transform: uppercase;
     color         : var(--name-color);
     line-height   : 1.1;
-    margin-bottom : 6px;
+    margin-bottom : 5px;
 }}
 
 .cv-tagline {{
-    font-size    : 11pt;
+    font-size    : 10.5pt;
     color        : var(--accent);
     font-weight  : 600;
     margin-bottom: 10px;
 }}
 
+/* ── Contacts — alignement icônes + texte ── */
+
 .cv-contact {{
-    font-size : 9.5pt;
-    color     : var(--contact-color);
-    display   : flex;
-    flex-wrap : wrap;
-    gap       : 4px 20px;
+    font-size  : 8.5pt; /* was 9pt */
+    color      : var(--contact-color);
+    display    : flex;
+    flex-wrap  : wrap;
+    gap        : 4px 11px; /*was 5px 18px */
+    align-items: center;
 }}
 
 .cv-contact-item {{
-    display    : flex;
+    display    : inline-flex;
     align-items: center;
-    gap        : 4px;
+    gap        : 5px;
+    line-height: 1;
+    white-space: nowrap;
 }}
 
 .cv-contact-icon {{
-    font-size: 10pt;
-    opacity  : 0.7;
+    display    : inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    line-height: 0;
+}}
+
+.cv-contact-icon svg.cv-icon {{
+    width      : 12px;
+    height     : 12px;
+    fill       : currentColor;
+    display    : block;
+    flex-shrink: 0;
+    opacity    : 0.7;
+}}
+
+.cv-contact-text {{
+    line-height: 1;
 }}
 
 .cv-contact-link {{
@@ -386,10 +538,7 @@ body {{
     text-decoration: none;
     transition     : color 0.15s;
 }}
-.cv-contact-link:hover {{
-    color          : var(--accent);
-    text-decoration: underline;
-}}
+.cv-contact-link:hover {{ color: var(--accent); text-decoration: underline; }}
 
 /* ══════════════════════════════════════════════════════
    DEUX COLONNES
@@ -659,20 +808,39 @@ body {{
 ══════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {{
-    .cv-page    {{ margin: 0; border-radius: 0; box-shadow: none; }}
+    .cv-page {{ margin: 0; border-radius: 0; box-shadow: none; }}
+
+    .cv-header        {{ flex-direction: column; }}
+    .cv-header-photo-col {{
+        width          : 100%;
+        padding        : 14px 20px;
+        flex-direction : row;
+        justify-content: flex-start;
+        gap            : 16px;
+    }}
+    .cv-photo,
+    .cv-photo-placeholder {{ width: 64px; height: 64px; flex-shrink: 0; }}
+    .cv-photo-placeholder  {{ font-size: 14pt; }}
+    .cv-header-info-col    {{ padding: 14px 16px 14px 16px; }}
+    .cv-name    {{ font-size: 18pt; }}
+    .cv-tagline {{ font-size: 9.5pt; }}
+    .cv-contact {{ flex-direction: column; gap: 5px; }}
+
     .cv-body    {{ flex-direction: column; }}
     .cv-sidebar {{ width: 100%; order: 2; padding: 20px 16px 28px; }}
     .cv-main    {{ order: 1; padding: 16px 16px 20px; }}
 
-    .cv-header  {{ padding: 20px 16px 16px; }}
-    .cv-name    {{ font-size: 18pt; letter-spacing: 2px; }}
-    .cv-tagline {{ font-size: 10pt; }}
-    .cv-contact {{ flex-direction: column; gap: 5px; }}
-
     .theme-toggle {{ top: 10px; right: 12px; padding: 3px 8px; font-size: 12px; }}
-
     .entry-header {{ flex-direction: column; gap: 5px; }}
     .entry-date   {{ align-self: flex-start; }}
+}}
+
+@media (max-width: 480px) {{
+    .cv-name    {{ font-size: 15pt; letter-spacing: 1px; }}
+    body        {{ font-size: 10pt; }}
+    .cv-main,
+    .cv-sidebar {{ padding: 14px 14px 20px; }}
+    .entry-card {{ padding: 10px 12px; }}
 }}
 
 /* ══════════════════════════════════════════════════════
@@ -688,92 +856,5 @@ body {{
     .entry-card {{ padding: 10px 12px; }}
     .cv-tagline {{ font-size: 9.5pt; }}
 }}
-
-/* ══════════════════════════════════════════════════════
-       IMPRESSION / PDF — 1 page A4
-    ══════════════════════════════════════════════════════ */
-
-    @page {{ margin: 5mm 8mm; }}
-
-    @media print {{
-
-        /* Masquer éléments interactifs */
-        .theme-toggle,
-        #cv-particles {{ display: none !important; }}
-
-        /* Fond blanc, pas de shadow */
-        body, .cv-page {{
-            background   : white !important;
-            box-shadow   : none !important;
-            border-radius: 0 !important;
-            margin       : 0 !important;
-            max-width    : none !important;
-        }}
-
-        /* Corps compact */
-        body {{ font-size: 8pt !important; line-height: 1.3 !important; }}
-
-        /* ── Forcer layout 2 colonnes (évite le stacking mobile) ── */
-        .cv-body {{
-            display       : flex !important;
-            flex-direction: row !important;
-            min-height    : unset !important;
-        }}
-        .cv-sidebar {{
-            width  : 195px !important;
-            order  : -1 !important;
-            padding: 12px 13px 14px !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust        : exact;
-        }}
-        .cv-main {{ order: 1 !important; padding: 12px 16px 14px !important; }}
-
-        /* ── Header ── */
-        .cv-header  {{ padding: 12px 18px 10px !important; border-bottom-width: 2px !important; }}
-        .cv-name    {{ font-size: 17pt !important; letter-spacing: 2px !important; margin-bottom: 3px !important; }}
-        .cv-tagline {{ font-size: 8.5pt !important; margin-bottom: 4px !important; }}
-        .cv-contact {{ font-size: 7.5pt !important; gap: 2px 8px !important; }}
-
-        /* ── Titres de section ── */
-        .section-title {{
-            font-size      : 7.5pt !important;
-            letter-spacing : 1.5px !important;
-            margin-top     : 10px  !important;
-            margin-bottom  : 7px   !important;
-            padding-bottom : 3px   !important;
-        }}
-        .cv-main > section:first-child .section-title {{ margin-top: 0 !important; }}
-
-        /* ── Cartes expérience ── */
-        .entry-card {{
-            padding      : 6px 9px !important;
-            margin-bottom: 5px    !important;
-            page-break-inside: avoid;
-        }}
-        .section-title {{ page-break-after: avoid; }}
-        .entry-title   {{ font-size: 8pt   !important; }}
-        .entry-sub     {{ font-size: 7pt   !important; }}
-        .entry-date    {{ font-size: 7pt   !important; padding: 1px 5px !important; }}
-        .entry ul      {{ margin-left: 12px !important; margin-top: 3px !important; }}
-        .entry ul li   {{ font-size: 7.5pt !important; margin-bottom: 1px !important; line-height: 1.3 !important; }}
-
-        /* ── Résumé ── */
-        .cv-summary {{ font-size: 7.5pt !important; padding: 6px 9px !important; }}
-
-        /* ── Sidebar ── */
-        .skill-category {{ font-size: 6.5pt !important; margin-top: 7px  !important; margin-bottom: 3px !important; }}
-        .tag            {{ font-size: 6.5pt !important; padding: 1px 6px !important; }}
-        .lang-item      {{ margin-bottom: 3px !important; }}
-        .lang-name      {{ font-size: 8pt !important; }}
-        .lang-level     {{ font-size: 7pt !important; }}
-        .assoc-entry    {{ margin-bottom: 5px !important; }}
-        .assoc-role     {{ font-size: 8pt !important; }}
-        .assoc-org,
-        .assoc-desc     {{ font-size: 7pt !important; }}
-        .interest-item  {{ font-size: 7pt !important; margin-bottom: 2px !important; }}
-
-        /* ── KPI ── */
-        .kpi-badge {{ font-size: 7pt !important; padding: 0 4px !important; }}
-    }}
 
 """

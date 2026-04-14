@@ -99,39 +99,70 @@ def _pdf_exists(path: str) -> bool:
 # ════════════════════════════════════════════════════════════
 
 def _try_playwright(html: str, pdf_path: str) -> bool:
+    """
+    PDF généré à largeur A4 fixe (210 mm).
+    La hauteur est mesurée au viewport EXACT que Playwright utilisera,
+    garantissant zéro blanc et une correspondance parfaite.
+    """
     try:
         from playwright.sync_api import sync_playwright
 
+        SCALE      = 0.84
+        MARG_MM    = 6          # marge identique sur chaque bord
+        PX_TO_MM   = 25.4 / 96  # 1 CSS-px = 25.4/96 mm (96 dpi)
+        PAPER_W_MM = 210        # largeur A4 standard
+
+        # ── Viewport effectif que Playwright utilisera lors du rendu PDF ──────
+        # effective_vp = (paper_mm − 2 × margin_mm) / 25.4 × 96 / scale
+        # Avec A4 + marges 6 mm + scale 0.84 → ≈ 891 px
+        eff_vp_px = int((PAPER_W_MM - 2 * MARG_MM) / 25.4 * 96 / SCALE)
+
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            # Viewport large → évite le déclenchement des media queries mobiles
-            page = browser.new_page(viewport={"width": 1400, "height": 900})
+
+            # Viewport = viewport réel du PDF → mesure de hauteur exacte
+            page = browser.new_page(viewport={"width": eff_vp_px, "height": 1200})
+            page.emulate_media(media="print")
             page.set_content(html, wait_until="domcontentloaded")
-            page.wait_for_timeout(400)   # laisse le JS (particules) s'initialiser
+            page.wait_for_timeout(500)
+
+            # Hauteur de la carte CV après CSS print, au bon viewport
+            cv_h_px = page.evaluate("""
+                () => {
+                    const el = document.querySelector('.cv-page');
+                    if (!el) return document.documentElement.scrollHeight;
+                    return Math.ceil(el.getBoundingClientRect().height);
+                }
+            """)
+
+            # Hauteur papier = contenu converti + marges + 2 mm de sécurité
+            paper_h_mm = cv_h_px * SCALE * PX_TO_MM + 2 * MARG_MM + 2
 
             page.pdf(
-                path=pdf_path,
-                format="A4",
-                print_background=True,   # conserve les couleurs sidebar, KPI, etc.
-                scale=0.82,              # réduit légèrement pour tenir sur 1 page
-                margin={
-                    "top"   : "0mm",
-                    "bottom": "0mm",
-                    "left"  : "0mm",
-                    "right" : "0mm",
+                path             = pdf_path,
+                width            = f"{PAPER_W_MM}mm",
+                height           = f"{paper_h_mm:.1f}mm",
+                print_background = True,
+                scale            = SCALE,
+                margin           = {
+                    "top"   : f"{MARG_MM}mm",
+                    "bottom": f"{MARG_MM}mm",
+                    "left"  : f"{MARG_MM}mm",
+                    "right" : f"{MARG_MM}mm",
                 },
             )
             browser.close()
 
-        print(f"  ✅  PDF   →  {pdf_path}  (Playwright)")
+        print(f"  ✅ PDF → {pdf_path}  ({PAPER_W_MM} × {paper_h_mm:.0f} mm)")
         return True
 
     except ImportError:
-        print("  ℹ   Playwright non installé → essai suivant…")
+        print("  ℹ Playwright non installé → essai suivant…")
         return False
     except Exception as e:
-        print(f"  ⚠   Playwright : {e} → essai suivant…")
+        print(f"  ⚠ Playwright : {e} → essai suivant…")
         return False
+
 
 def _try_browser_headless(html_path: str, pdf_path: str) -> bool:
     """
