@@ -377,6 +377,11 @@ body {{
     .assoc-role      {{ font-size: 7.5pt !important; }}
     .assoc-org,
     .assoc-desc      {{ font-size: 6.5pt !important; }}
+    /* Supprimer la marge basse du dernier élément dans chaque section sidebar
+   → espacement identique entre toutes les sections */
+    .lang-item:last-child   {{ margin-bottom: 0; }}
+    .assoc-entry:last-child {{ margin-bottom: 0; }}
+    .interest-item:last-child {{ margin-bottom: 0; }}
     .interest-item   {{ font-size: 6.5pt !important; margin-bottom: 2px !important; }}
     .kpi-badge       {{ font-size: 6.5pt !important; padding: 0 3px !important; }}
 }}

@@ -108,6 +108,9 @@ EXPERIENCE = [
             ),
         ],
     },
+
+
+    # ── Expérience 2 — WMS Key User ──────────────────────────────
     {
         "title"  : bi("Ingénieur Projets Supply Chain – WMS Key User",
                       "Supply Chain Project Engineer – WMS Key User"),
@@ -116,30 +119,42 @@ EXPERIENCE = [
         "end"    : bi("Déc. 2023",  "Dec. 2023"),
         "bullets": [
             bi(
-                f"{bold('Business')} : configuration du WMS & tests fonctionnels "
-                f"répondant à des angles morts opérationnels & stratégiques — "
-                f"{kpi('+100 cas de test')} définis & exécutés.",
+                f"{bold('Business')} : WMS configuration & tests fonctionnels "
+                f"— {kpi('+100 cas de test')} définis & exécutés.",
                 f"{bold('Business')}: WMS configuration & functional tests "
-                f"addressing operational & strategic blind spots — "
-                f"{kpi('100+')} test cases defined & executed.",
+                f"— {kpi('100+ test cases')} defined & executed.",
             ),
             bi(
                 f"{bold('Data & IT')} : {kpi('+20 rapports BI')} répondant à des "
-                f"questions opérationnelles clés ; animation communauté dev Europe ; "
-                f"migration de données SAP → Manhattan.",
-                f"{bold('Data & IT')}: {kpi('20+')} BI reports answering key "
-                f"operational questions; European developer community leadership; "
-                f"SAP → Manhattan data migration.",
+                f"questions opérationnelles clés ; communauté dev Europe ; migration SAP → Manhattan.",
+                f"{bold('Data & IT')}: {kpi('20+ BI reports')} answering key "
+                f"operational questions; European developer community; SAP → Manhattan migration.",
             ),
             bi(
-                f"{bold('Change Management')} : documentation complète, "
-                f"{kpi('~50h')} de formation opérateurs & chefs d'équipe, "
-                f"accompagnement au déploiement & optimisation continue.",
-                f"{bold('Change Management')}: full documentation, "
-                f"{kpi('~50h')} training for operators & team leaders, "
+                f"{bold('Change Management')} : documentation & "
+                f"{kpi('~50h de formation')} opérateurs & chefs d'équipe, "
+                f"déploiement & optimisation continue.",
+                f"{bold('Change Management')}: documentation & "
+                f"{kpi('~50h training')} for operators & team leaders, "
                 f"deployment support & continuous optimisation.",
             ),
         ],
+
+# ── Expérience 3 — Copacking Planner ─────────────────────────
+"bullets": [
+    bi(
+        f"Responsabilités senior (fin de stage) : planification, appro & "
+        f"logistique catalogue promo Garnier — {kpi('99% service rate')}.",
+        f"Senior responsibilities (end of internship): planning, procurement "
+        f"& logistics for Garnier's promo catalogue — {kpi('99% service rate')}.",
+    ),
+    bi(
+        f"BI & {bold('stakeholder management')} : amélioration rapports de suivi ; "
+        f"réduction {kpi('−20% des écarts de stock')} avec le copacker.",
+        f"BI & {bold('stakeholder management')}: improved monitoring reports; "
+        f"{kpi('−20% stock gap')} reduction with co-packer.",
+    ),
+],
     },
     {
         "title"  : "Copacking Planner",
@@ -251,25 +266,26 @@ LANGUAGES = [
 
 ASSOCIATIONS = [
     {
-        "role"       : bi("Délégué — One Young World Summit",
-                          "Delegate — One Young World Summit"),
-        "org"        : "One Young World",
-        "period"     : "2024 – 2025",
-        "description": bi(
-            "Sommet mondial RSE & leadership responsable à l'international ; "
-            "programme de 9 mois pour devenir acteur du changement.",
+        "role"        : bi("Délégué — One Young World",
+                           "Delegate — One Young World"),
+        "org"         : "One Young World",
+        "period"      : "2024 – 2025",
+        "description" : bi(
+            "Sommet mondial RSE & leadership à l'international ; "
+            "programme learning 9 mois & projet d'image de marque à impact.",
             "Global sustainability & ethics summit abroad; "
-            "9-month programme to become a responsible leader.",
+            "9-month training program & high-impact brand cause project.",
         ),
     },
     {
-        "role"       : bi(
-            "Président du Bureau des Sports — 27 personnes managées, budget 25K€",
-            "President of Sports Committee — 27 people managed, €25K budget",
+        "role"        : bi("Président du Bureau des Sports",
+                           "President of Sports Committee"),
+        "org"         : "Grenoble INP",
+        "period"      : "2020 – 2021",
+        "description" : bi(
+            "27 personnes managées, budget géré : 25K€.",
+            "27 people managed, €25K budget.",
         ),
-        "org"        : "Grenoble INP",
-        "period"     : "2020 – 2021",
-        "description": bi("", ""),
     },
 ]
 
