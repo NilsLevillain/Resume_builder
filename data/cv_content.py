@@ -23,7 +23,7 @@ PERSONAL = {
     "phone"   : "+33 06 69 56 69 37",
     "location": "Paris, France",
     "linkedin": "linkedin.com/in/nils-levillain",
-    "github"  : "github.com/nils-levillain",
+    "github"  : "https://github.com/NilsLevillain/",
     "photo" : "data/assets/photo.jpg",
 }
 
