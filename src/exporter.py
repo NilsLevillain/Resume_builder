@@ -8,10 +8,11 @@ Compatible avec :
 import os
 import shutil
 import subprocess
-import data.cv_content as _mod
 
-from data.cv_config import OUTPUT_DIR, FILE_BASENAME, PRIMARY_LANG
-from src.builder import assemble_html
+import data.cv_content as _mod
+from data.cv_config   import OUTPUT_DIR, FILE_BASENAME, PRIMARY_LANG
+from data.cv_config   import PDF_PAPER_W_MM, PDF_SCALE, PDF_MARGIN_MM   # ← ajouter
+from src.builder      import assemble_html
 
 # ════════════════════════════════════════════════════════════
 # CHARGEMENT DES DONNÉES (compatible ancien et nouveau format)
@@ -99,34 +100,24 @@ def _pdf_exists(path: str) -> bool:
 # ════════════════════════════════════════════════════════════
 
 def _try_playwright(html: str, pdf_path: str) -> bool:
-    """
-    PDF généré à largeur A4 fixe (210 mm).
-    La hauteur est mesurée au viewport EXACT que Playwright utilisera,
-    garantissant zéro blanc et une correspondance parfaite.
-    """
     try:
         from playwright.sync_api import sync_playwright
 
-        SCALE      = 0.84
-        MARG_MM    = 6          # marge identique sur chaque bord
-        PX_TO_MM   = 25.4 / 96  # 1 CSS-px = 25.4/96 mm (96 dpi)
-        PAPER_W_MM = 210        # largeur A4 standard
+        PX_TO_MM  = 25.4 / 96
 
-        # ── Viewport effectif que Playwright utilisera lors du rendu PDF ──────
-        # effective_vp = (paper_mm − 2 × margin_mm) / 25.4 × 96 / scale
-        # Avec A4 + marges 6 mm + scale 0.84 → ≈ 891 px
-        eff_vp_px = int((PAPER_W_MM - 2 * MARG_MM) / 25.4 * 96 / SCALE)
+        # Viewport effectif = ce que Playwright "voit" lors du rendu PDF
+        # → on mesure la hauteur à ce viewport exact pour zéro blanc
+        eff_vp_px = int(
+            (PDF_PAPER_W_MM - 2 * PDF_MARGIN_MM) / 25.4 * 96 / PDF_SCALE
+        )
 
         with sync_playwright() as p:
             browser = p.chromium.launch()
-
-            # Viewport = viewport réel du PDF → mesure de hauteur exacte
-            page = browser.new_page(viewport={"width": eff_vp_px, "height": 1200})
+            page    = browser.new_page(viewport={"width": eff_vp_px, "height": 1200})
             page.emulate_media(media="print")
             page.set_content(html, wait_until="domcontentloaded")
             page.wait_for_timeout(500)
 
-            # Hauteur de la carte CV après CSS print, au bon viewport
             cv_h_px = page.evaluate("""
                 () => {
                     const el = document.querySelector('.cv-page');
@@ -135,25 +126,24 @@ def _try_playwright(html: str, pdf_path: str) -> bool:
                 }
             """)
 
-            # Hauteur papier = contenu converti + marges + 2 mm de sécurité
-            paper_h_mm = cv_h_px * SCALE * PX_TO_MM + 2 * MARG_MM + 2
+            paper_h_mm = cv_h_px * PDF_SCALE * PX_TO_MM + 2 * PDF_MARGIN_MM + 2
 
             page.pdf(
                 path             = pdf_path,
-                width            = f"{PAPER_W_MM}mm",
+                width            = f"{PDF_PAPER_W_MM}mm",
                 height           = f"{paper_h_mm:.1f}mm",
                 print_background = True,
-                scale            = SCALE,
+                scale            = PDF_SCALE,
                 margin           = {
-                    "top"   : f"{MARG_MM}mm",
-                    "bottom": f"{MARG_MM}mm",
-                    "left"  : f"{MARG_MM}mm",
-                    "right" : f"{MARG_MM}mm",
+                    "top"   : f"{PDF_MARGIN_MM}mm",
+                    "bottom": f"{PDF_MARGIN_MM}mm",
+                    "left"  : f"{PDF_MARGIN_MM}mm",
+                    "right" : f"{PDF_MARGIN_MM}mm",
                 },
             )
             browser.close()
 
-        print(f"  ✅ PDF → {pdf_path}  ({PAPER_W_MM} × {paper_h_mm:.0f} mm)")
+        print(f"  ✅ PDF → {pdf_path}  ({PDF_PAPER_W_MM} × {paper_h_mm:.0f} mm, scale={PDF_SCALE})")
         return True
 
     except ImportError:
@@ -162,7 +152,6 @@ def _try_playwright(html: str, pdf_path: str) -> bool:
     except Exception as e:
         print(f"  ⚠ Playwright : {e} → essai suivant…")
         return False
-
 
 def _try_browser_headless(html_path: str, pdf_path: str) -> bool:
     """

@@ -92,14 +92,24 @@ def _tags(items: list) -> str:
     spans = "".join(f'<span class="tag">{item}</span>' for item in items)
     return f'<div class="tags">{spans}</div>'
 
+
 def _photo_data_uri(path: str) -> str:
-    """Lit le fichier photo (relatif au répertoire de travail) et retourne un data URI base64.
-    Retourne une chaîne vide si le fichier est absent — le placeholder CSS prend le relais."""
+    """Lit la photo et retourne un data URI base64.
+    Résout le chemin depuis la racine du projet (parent de src/)
+    → fonctionne identiquement en local et sur GitHub Actions."""
     if not path:
         return ""
-    abs_path = path if os.path.isabs(path) else os.path.join(os.getcwd(), path)
+    if not os.path.isabs(path):
+        # builder.py est dans src/ → la racine du projet est deux niveaux au-dessus
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        abs_path     = os.path.join(project_root, path)
+    else:
+        abs_path = path
+
     if not os.path.exists(abs_path):
+        print(f"  ⚠ Photo non trouvée : {abs_path}")   # visible dans les logs CI
         return ""
+
     with open(abs_path, "rb") as f:
         data = base64.b64encode(f.read()).decode()
     ext  = abs_path.rsplit(".", 1)[-1].lower()
