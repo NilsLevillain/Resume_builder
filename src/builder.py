@@ -93,21 +93,28 @@ def _tags(items: list) -> str:
     return f'<div class="tags">{spans}</div>'
 
 
-def _photo_data_uri(path: str) -> str:
-    """Lit la photo et retourne un data URI base64.
-    Résout le chemin depuis la racine du projet (parent de src/)
-    → fonctionne identiquement en local et sur GitHub Actions."""
+def _photo_data_uri(personal: dict) -> str:
+    """Retourne le data URI de la photo.
+    Priorité 1 : base64 embarqué dans cv_content.py (photo_b64) — 100% fiable.
+    Priorité 2 : lecture depuis un fichier (photo) — dépend du système de fichiers.
+    """
+    # Priorité 1 — base64 directement dans le dict (recommandé)
+    b64 = personal.get("photo_b64", "")
+    if b64:
+        return b64
+
+    # Priorité 2 — chemin fichier relatif à la racine du projet
+    path = personal.get("photo", "")
     if not path:
         return ""
     if not os.path.isabs(path):
-        # builder.py est dans src/ → la racine du projet est deux niveaux au-dessus
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         abs_path     = os.path.join(project_root, path)
     else:
         abs_path = path
 
     if not os.path.exists(abs_path):
-        print(f"  ⚠ Photo non trouvée : {abs_path}")   # visible dans les logs CI
+        print(f"  ⚠ Photo non trouvée : {abs_path}")
         return ""
 
     with open(abs_path, "rb") as f:
@@ -135,7 +142,7 @@ def _short_url(url: str) -> str:
 
 def build_header(personal: dict, lang: str) -> str:
     p          = personal
-    photo_uri  = _photo_data_uri(p.get("photo", ""))
+    photo_uri = _photo_data_uri(p)   # ← passe maintenant 'p' (le dict entier)
     initials   = _initials(p.get("name", "?"))
 
     if photo_uri:

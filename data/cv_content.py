@@ -27,7 +27,7 @@ PERSONAL = {
     "location": "Paris, France",
     "linkedin": "linkedin.com/in/nils-levillain",
     "github"  : "github.com/NilsLevillain",
-    "photo"   : "data/assets/photo.jpg",
+    "photo": "data/assets/photo.jpg",
 }
 
 # ══════════════════════════════════════════════════════════════
