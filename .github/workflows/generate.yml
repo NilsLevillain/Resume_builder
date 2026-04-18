@@ -28,6 +28,12 @@ jobs:
           playwright install chromium
           playwright install-deps chromium
 
+      - name: Verify assets
+        run: |
+          echo "=== Checking photo file ==="
+          ls -la data/assets/ 2>/dev/null || echo "❌ data/assets/ folder not found"
+          [ -f data/assets/photo.jpg ] && echo "✅ photo.jpg found" || echo "❌ photo.jpg NOT found"
+          
       - name: Generate CV (FR + EN)
         run: python generate.py
 
