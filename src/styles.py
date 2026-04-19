@@ -765,6 +765,47 @@ body {{
 .lang-dot.filled {{ background: var(--sidebar-h2); }}
 
 /* ══════════════════════════════════════════════════════
+   CLIFTON STRENGTHS (sidebar)
+══════════════════════════════════════════════════════ */
+
+.strength-item {{
+    display    : flex;
+    align-items: center;
+    gap        : 8px;
+    margin-bottom: 7px;
+}}
+
+.strength-item:last-child {{ margin-bottom: 0; }}
+
+.strength-rank {{
+    font-size  : 7pt;
+    font-weight: bold;
+    color      : var(--sidebar-muted);
+    min-width  : 14px;
+    flex-shrink: 0;
+}}
+
+.strength-badge {{
+    display      : inline-block;
+    padding      : 2px 10px;
+    border-radius: 100px;
+    font-size    : 8.5pt;
+    font-weight  : bold;
+    color        : #ffffff;
+    line-height  : 1.5;
+    white-space  : nowrap;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust        : exact;
+}}
+
+.strength-domain {{
+    font-size : 7pt;
+    color     : var(--sidebar-muted);
+    font-style: italic;
+}}
+
+
+/* ══════════════════════════════════════════════════════
    ASSOCIATIONS (sidebar)
 ══════════════════════════════════════════════════════ */
 
@@ -792,6 +833,11 @@ body {{
     margin-top : 3px;
     flex-shrink: 0;
 }}
+
+/* ── Uniformité espacement sidebar entre sections ── */
+.cv-sidebar .lang-item:last-child     {{ margin-bottom: 0; }}
+.cv-sidebar .assoc-entry:last-child   {{ margin-bottom: 0; }}
+.cv-sidebar .interest-item:last-child {{ margin-bottom: 0; }}
 
 /* ══════════════════════════════════════════════════════
    RÉSUMÉ (main)

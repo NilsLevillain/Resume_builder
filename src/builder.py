@@ -285,6 +285,29 @@ def build_skills(skills: list, lang: str) -> str:
         + f'</section>\n'
     )
 
+def build_strengths(strengths: list, lang: str) -> str:
+    if not strengths or not _is_on("strengths"):
+        return ""
+    items = []
+    for i, s in enumerate(strengths, 1):
+        name   = t(s["name"], lang)
+        color  = s.get("color", "#666666")
+        domain = s.get("domain", "")
+        items.append(
+            f'  <div class="strength-item">\n'
+            f'    <span class="strength-rank">#{i}</span>\n'
+            f'    <span class="strength-badge" style="background:{color}">{name}</span>\n'
+            f'    <span class="strength-domain">{domain}</span>\n'
+            f'  </div>\n'
+        )
+    return (
+        f'<section>\n'
+        f'  <div class="section-title">{_label("strengths", lang)}</div>\n'
+        + "".join(items)
+        + f'</section>\n'
+    )
+
+
 def build_languages(languages: list, lang: str) -> str:
     if not _is_on("languages"):
         return ""
@@ -349,6 +372,7 @@ def _build_main(cv: dict, lang: str) -> str:
 def _build_sidebar(cv: dict, lang: str) -> str:
     return (
         build_skills      (cv["skills"],               lang) +
+        build_strengths   (cv.get("strengths", []),     lang) +  
         build_languages   (cv["languages"],            lang) +
         build_associations(cv.get("associations", []), lang) +
         build_interests   (cv.get("interests", []),    lang)

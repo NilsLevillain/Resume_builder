@@ -32,6 +32,7 @@ def _load_cv_data() -> dict:
             "experience"  : getattr(_mod, "EXPERIENCE",   []),
             "education"   : getattr(_mod, "EDUCATION",    []),
             "skills"      : _normalize_skills(getattr(_mod, "SKILLS", [])),
+            "strengths"   : getattr(_mod, "STRENGTHS", []),   # ← nouveau
             "languages"   : getattr(_mod, "LANGUAGES",    []),
             "associations": getattr(_mod, "ASSOCIATIONS", []),
             "interests"   : getattr(_mod, "INTERESTS",    []),
