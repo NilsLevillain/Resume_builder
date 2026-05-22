@@ -62,6 +62,6 @@ SECTION_LABELS = {
 # ── PDF Export — modifier ici pour ajuster le rendu ──────────
 PDF_PAPER_W_MM = 210    # largeur du papier en mm  (210 = A4 standard)
                         # augmenter si le PDF est trop étroit (ex: 220, 230)
-PDF_SCALE      = 0.88   # facteur de zoom du contenu (0.88 ≈ 88 %)
+PDF_SCALE      = 0.92   # facteur de zoom du contenu (0.88 ≈ 88 %)
                         # réduire pour que tout rentre, augmenter pour agrandir
 PDF_MARGIN_MM  = 10      # marge identique sur chaque bord en mm
