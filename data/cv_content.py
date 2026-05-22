@@ -37,20 +37,20 @@ SUMMARY = bi(
         "Analytics Product Owner avec 3+ ans d'expérience chez L'Oréal dans la gestion "
         "du cycle de vie complet de produits data et IA. "
         "Expert en définition de vision stratégique, construction de roadmaps techniques "
-        "et pilotage d'équipes agiles dans un environnement cloud (GCP). "
+        "et pilotage d'équipes agiles dans un environnement cloud et BI (GCP, PBI). "
         "Reconnu pour ma capacité à traduire des besoins métier complexes en solutions "
-        "technologiques innovantes (Agentic AI, LLMs) et à fédérer des "
-        "équipes mondiales (ingénieurs IT, data scientists, stakeholders). "
+        "technologiques innovantes (Agentic AI, Data Viz / Simulation) et à fédérer des "
+        "équipes mondiales (ingénieurs IT, designers, data scientists, stakeholders). "
         "Passionné par la conduite du changement et l'adoption de l'IA à grande échelle."
     ),
     en=(
         "Analytics Product Owner with 3+ years at L'Oréal managing the entire lifecycle "
         "of data and AI products. "
         "Expert in defining strategic vision, building technical roadmaps, "
-        "and leading agile teams in a cloud environment (GCP). "
+        "and leading agile teams in a cloud & BI environment (GCP, PBI). "
         "Recognized for translating complex business needs into innovative "
-        "technological solutions (Agentic AI, LLMs) and aligning global "
-        "teams (IT engineers, data scientists, stakeholders). "
+        "technological solutions (Agentic AI, Data Viz / Simulation) and aligning global "
+        "teams (IT engineers, designers, data scientists, stakeholders). "
         "Passionate about driving adoption and upskilling communities for AI at scale."
     ),
 )
@@ -78,11 +78,11 @@ EXPERIENCE = [
             ),
             bi(
                 f"Innovation et {bold('Agentic AI')} : préparation de produits basés sur les LLMs "
-                f"(couches sémantiques) en collaboration avec l'IT engineering ; "
-                f"pilotage de l'initiative GenBI / Talk with your Data pour {kpi('200+ utilisateurs')} mondiaux.",
+                f"(modèles sémantiques, frameworks de test, agents conversationnels) en collaboration avec l'IT engineering ; "
+                f"pilotage des débuts de l'initiative GenBI / Talk with your Data pour {kpi('200+ utilisateurs')} mondiaux.",
                 f"Innovation and {bold('Agentic AI')}: preparing LLM-based products "
-                f"(semantic layers) in collaboration with IT engineering; "
-                f"spearheaded the GenBI / Talk with your Data initiative for {kpi('200+ global users')}.",
+                f"(semantic models, test frameworks, talk to your data agents) in collaboration with IT engineering; "
+                f"spearheaded the beginning of GenBI / Talk with your Data initiative for {kpi('200+ global users')}.",
             ),
             bi(
                 f"Technologie cloud : conception et déploiement de solutions scalables sur "
@@ -101,17 +101,17 @@ EXPERIENCE = [
             bi(
                 f"Adoption et upskilling : plan d'engagement garantissant l'adoption des plateformes ({kpi('NPS 50+')}) ; "
                 f"animation de {bold('sharing sessions')} (frameworks webapps, IA pour PM) pour la "
-                f"montée en compétences des collègues.",
+                f"montée en compétences des collègues sur les nouvelles initiatives tech.",
                 f"Adoption and upskilling: engagement plan driving platform adoption ({kpi('NPS 50+')}); "
                 f"led {bold('sharing sessions')} (webapp frameworks, AI for PMs) to "
-                f"upskill colleagues and the tech community.",
+                f"upskill colleagues on new tech initiatives.",
             ),
         ],
     },
     {
         "title"  : bi(
-            "Chef de Projet Tech : Transformation & Adoption",
-            "Tech Project Lead : Transformation & Adoption",
+            "WMS Tech Project Lead : Transformation & Adoption",
+            "WMS Tech Project Lead : Transformation & Adoption",
         ),
         "company": "L'Oréal",
         "start"  : bi("Sept. 2022", "Sept. 2022"),
@@ -119,11 +119,11 @@ EXPERIENCE = [
         "bullets": [
             bi(
                 f"Pilotage de projet Agile : exécution d'un programme de transformation système "
-                f"majeur (SAP vers Manhattan) avec {kpi('100+ cas de test')} validés et "
-                f"une conformité technique assurée.",
+                f"majeur (SAP vers Manhattan) incluant design, configuration, {kpi('100+ cas de test')} validés "
+                f"et conformité technique assurée.",
                 f"Agile project management: executed a major system transformation program "
-                f"(SAP to Manhattan) with {kpi('100+ test cases')} validated and "
-                f"technical compliance ensured.",
+                f"(SAP to Manhattan) with design, configuration, {kpi('100+ test cases')} validated "
+                f"and technical compliance ensured.",
             ),
             bi(
                 f"Stakeholder management : alignement des équipes IT, opérations et partenaires "
@@ -133,9 +133,11 @@ EXPERIENCE = [
             ),
             bi(
                 f"Conduite du changement : rédaction de la documentation technique et animation de "
-                f"{kpi('~50h de formation')} pour garantir l'adoption des nouveaux outils.",
+                f"{kpi('~50h de formation')} pour garantir l'adoption et la satisfaction autour des nouveaux outils "
+                f"afin de générer de l'impact business.",
                 f"Change management: drafted technical documentation and led "
-                f"{kpi('~50h of training')} to guarantee the adoption of new tools.",
+                f"{kpi('~50h of training')} to guarantee the adoption & satisfaction of new tools "
+                f"to drive business impact.",
             ),
         ],
     },
@@ -145,6 +147,12 @@ EXPERIENCE = [
         "start"  : bi("Janv. 2022", "Jan. 2022"),
         "end"    : bi("Juil. 2022", "Jul. 2022"),
         "bullets": [
+            bi(
+                f"Performance opérationnelle : planification et logistique des catalogues promotionnels, "
+                f"atteignant un {kpi('taux de service de 99%')}.",
+                f"Operational performance: managed planning and logistics for promotional catalogues, "
+                f"achieving a {kpi('99% service rate')}.",
+            ),
             bi(
                 f"Analyse de données : création de dashboards de suivi permettant une "
                 f"réduction de {kpi('20% des écarts')} via une collaboration étroite avec les partenaires.",
@@ -250,8 +258,8 @@ STRENGTHS = [
 # ══════════════════════════════════════════════════════════════
 LANGUAGES = [
     {"lang": "Français", "level": bi("Langue maternelle", "Native")},
-    {"lang": "Anglais / English", "level": bi("C2 : TOEFL ITP 624", "C2: TOEFL ITP 624")},
-    {"lang": "Español / Espagnol", "level": bi("B1/B2", "B1/B2")},
+    {"lang": "English", "level": bi("C2 : TOEFL ITP 624", "C2: TOEFL ITP 624")},
+    {"lang": "Spanish", "level": bi("B1/B2", "B1/B2")},
 ]
 
 # ══════════════════════════════════════════════════════════════
